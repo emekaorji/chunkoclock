@@ -1,9 +1,13 @@
 import React from 'react';
 
-const TimeInput = () => {
+type TimeInputProps = {
+  value: string | number;
+} & React.InputHTMLAttributes<HTMLInputElement>;
+
+const TimeInput = ({ value, ...props }: TimeInputProps) => {
   return (
     <>
-      <div>TimeInput</div>
+      <input value={value} {...props} />
     </>
   );
 };

@@ -10,6 +10,7 @@ module.exports = {
       2,
       { namedComponents: 'arrow-function' },
     ],
+    'react/jsx-props-no-spreading': 'off',
     'import/extensions': 'off',
     'import/no-unresolved': 'off',
     'import/no-import-module-exports': 'off',

@@ -1,26 +1,14 @@
-import { useMemo, useState } from 'react';
 import { MemoryRouter as Router, Routes, Route } from 'react-router-dom';
-import './App.css';
-
-const Hello = () => {
-  const [time, setTime] = useState(230);
-
-  const minutes = useMemo(() => {
-    return Math.floor(time / 60);
-  }, [time]);
-
-  return (
-    <div>
-      <h1>{minutes}</h1>
-    </div>
-  );
-};
+import Digital from './components/views/digital/digital';
+import Hourglass from './components/views/hourglass/hourglass';
+import './styles/global.css';
 
 const App = () => {
   return (
     <Router>
       <Routes>
-        <Route path="/" element={<Hello />} />
+        <Route path="/" element={<Digital />} />
+        <Route path="/hourglass" element={<Hourglass />} />
       </Routes>
     </Router>
   );
