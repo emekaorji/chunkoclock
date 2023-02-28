@@ -1,0 +1,12 @@
+.input {
+  width: 1.2em;
+  height: 1.2em;
+  background-color: transparent;
+  font-size: inherit;
+  font-weight: inherit;
+  font-family: inherit;
+  text-align: center;
+  border: none;
+  /* border: 1px solid #fff4; */
+  outline: none;
+}

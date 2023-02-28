@@ -15,6 +15,7 @@ module.exports = {
     'import/no-unresolved': 'off',
     'import/no-import-module-exports': 'off',
     'no-unused-vars': 'warn',
+    'consistent-return': 'off',
   },
   parserOptions: {
     ecmaVersion: 2020,
