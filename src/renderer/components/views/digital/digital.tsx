@@ -1,117 +1,153 @@
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import TimeInput from 'renderer/components/interface/timeInput/timeInput';
+import getClassName from 'renderer/functions/getClassName';
+import useStore from 'renderer/hooks/useStore';
 import styles from './digital.module.css';
 
 // type DigitalProps = {};
 type eventProp = React.ChangeEvent<HTMLInputElement>;
+type timeValueType = {
+  hours: number;
+  minutes: number;
+  seconds: number;
+};
+
+const getTime = (
+  type: 'seconds' | 'minutes' | 'hours',
+  value: number
+): number => {
+  const currentTime = new Date();
+  const currentSeconds = currentTime.getSeconds();
+
+  if (type === 'seconds') {
+    currentTime.setSeconds(currentSeconds + value);
+  }
+  if (type === 'minutes') {
+    currentTime.setSeconds(currentSeconds + value * 60);
+  }
+  if (type === 'hours') {
+    currentTime.setSeconds(currentSeconds + value * 60 * 60);
+  }
+
+  return currentTime.getTime();
+};
+
+const getRemainingSeconds = (futureTime: number): number => {
+  const remainingSeconds =
+    new Date(futureTime).getTime() - new Date().getTime();
+  return Math.round(remainingSeconds / 1000);
+};
+
+const getValue = (seconds: number): timeValueType => {
+  return {
+    hours: Math.floor(seconds / 60 / 60),
+    minutes: Math.floor(seconds / 60) % 60,
+    seconds: seconds % 60,
+  };
+};
+
+const isValidTime = (time: number): boolean => {
+  return !!new Date(time).getTime();
+};
+
+const DEFAULT_TIME_VALUE: timeValueType = { hours: 0, minutes: 10, seconds: 0 };
 
 const Digital = () => {
-  const [time, setTime] = useState(230);
-  const [play, setPlay] = useState(true);
+  const [storeTime, setStoreTime] = useStore<number>('timer');
+  const [value, setValue] = useState(DEFAULT_TIME_VALUE);
+  const [timeUp, setTimeUp] = useState(false);
+  const intervalId = useRef<number | undefined>(undefined);
 
-  const hours = useMemo(() => {
-    return Math.floor(time / 60 / 60);
-  }, [time]);
+  const start = useCallback(
+    (timeValue: { hours: number; minutes: number; seconds: number }) => {
+      const hoursInSeconds = timeValue.hours * 60 * 60;
+      const minuteInSeconds = timeValue.minutes * 60;
+      const secondsInSeconds = timeValue.seconds;
+      const total = hoursInSeconds + minuteInSeconds + secondsInSeconds;
+      const time = getTime('seconds', total);
+      intervalId.current = window.setInterval(() => {
+        const remainingSeconds = getRemainingSeconds(time);
+        const seconds = remainingSeconds > 0 ? remainingSeconds : 0;
+        const newValue = getValue(seconds);
+        setValue(newValue);
+        console.log(seconds);
+        if (seconds < 1) {
+          setTimeUp(true);
+          clearInterval(intervalId.current);
+        }
+      }, 1000);
 
-  const minutes = useMemo(() => {
-    return Math.floor(time / 60) % 60;
-  }, [time]);
+      return time;
+    },
+    []
+  );
 
-  const seconds = useMemo(() => {
-    return time % 60;
-  }, [time]);
+  const handleStart = useCallback(
+    (timeValue: { hours: number; minutes: number; seconds: number }) => {
+      const time = start(timeValue);
+      setStoreTime(time);
+    },
+    [setStoreTime, start]
+  );
 
   useEffect(() => {
-    if (!play) return;
-    const intervalId = setInterval(() => {
-      setTime((prev) => prev - 1);
-    }, 1000);
+    if (storeTime && isValidTime(storeTime)) {
+      const seconds = getRemainingSeconds(storeTime);
+      const timeValue = getValue(seconds);
+      start(timeValue);
+    }
+  }, [start, storeTime]);
 
-    return () => {
-      clearInterval(intervalId);
-    };
-  }, [play]);
+  const handlePause = () => {
+    clearInterval(intervalId.current);
+  };
+
+  const handleStop = () => {
+    clearInterval(intervalId.current);
+  };
 
   const handleHoursChange = (event: eventProp) => {
-    const inputValue = parseInt(event.target.value, 10);
-    if (inputValue > 99) return;
-    const value = inputValue - hours;
-    setTime((prev) => prev + value * 60 * 60 || 0);
+    const intValue = parseInt(event.target.value, 10);
+    setValue((prev) => ({ ...prev, hours: intValue }));
   };
+
   const handleMinutesChange = (event: eventProp) => {
-    const inputValue = parseInt(event.target.value, 10);
-    if (minutes > 5) {
-      setTime(
-        (prev) => prev - minutes * 60 + (inputValue - minutes * 10) * 60 || 0
-      );
-      return;
-    }
-    if (inputValue > 59) return;
-    const value = inputValue - minutes;
-    setTime((prev) => prev + value * 60 || 0);
+    const intValue = parseInt(event.target.value, 10);
+    setValue((prev) => ({ ...prev, minutes: intValue }));
   };
+
   const handleSecondsChange = (event: eventProp) => {
-    const inputValue = parseInt(event.target.value, 10);
-    if (seconds > 5) {
-      setTime((prev) => prev - seconds + (inputValue - seconds * 10) || 0);
-      return;
-    }
-    if (inputValue > 59) return;
-    const value = inputValue - seconds;
-    setTime((prev) => prev + value || 0);
+    const intValue = parseInt(event.target.value, 10);
+    setValue((prev) => ({ ...prev, seconds: intValue }));
   };
 
   return (
     <>
-      <div className={styles.digital}>
+      <div className={styles.digital + getClassName(timeUp, styles.timeUp)}>
         <TimeInput
-          value={hours}
+          value={value.hours}
           onChange={handleHoursChange}
-          onFocus={() => setPlay(false)}
-          onKeyDown={(event) => {
-            if (event.key === 'Backspace') {
-              event.preventDefault();
-            }
-            if (event.key === 'Enter') {
-              setPlay(true);
-              // @ts-ignore
-              event.target.blur();
-            }
-          }}
+          onFocus={handlePause}
         />
         :
         <TimeInput
-          value={minutes}
+          value={value.minutes}
           onChange={handleMinutesChange}
-          onFocus={() => setPlay(false)}
-          onKeyDown={(event) => {
-            if (event.key === 'Backspace') {
-              event.preventDefault();
-            }
-            if (event.key === 'Enter') {
-              setPlay(true);
-              // @ts-ignore
-              event.target.blur();
-            }
-          }}
+          onFocus={handlePause}
         />
         :
         <TimeInput
-          value={seconds}
+          value={value.seconds}
           onChange={handleSecondsChange}
-          onFocus={() => setPlay(false)}
-          onKeyDown={(event) => {
-            if (event.key === 'Backspace') {
-              event.preventDefault();
-            }
-            if (event.key === 'Enter') {
-              setPlay(true);
-              // @ts-ignore
-              event.target.blur();
-            }
-          }}
+          onFocus={handlePause}
         />
       </div>
+      <button onClick={() => handleStart(value)} type="button">
+        Start
+      </button>
+      <button onClick={handlePause} type="button">
+        Stop
+      </button>
     </>
   );
 };
