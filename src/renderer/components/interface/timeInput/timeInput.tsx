@@ -1,16 +1,26 @@
-import React, { FocusEvent, useRef } from 'react';
+import React, { ChangeEvent, FocusEvent, useRef } from 'react';
 import styles from './timeInput.module.css';
 
 type TimeInputProps = {
   value: number;
+  onChange: (event: ChangeEvent<HTMLInputElement>) => void;
   onFocus: (event: FocusEvent<HTMLInputElement>) => void;
 } & React.InputHTMLAttributes<HTMLInputElement>;
 
 const pad0 = (value: number | string) => value.toString().padStart(2, '0');
 
-const TimeInput = ({ value = 0, onFocus, ...props }: TimeInputProps) => {
+const TimeInput = ({
+  value = 0,
+  onChange,
+  onFocus,
+  ...props
+}: TimeInputProps) => {
   const paddedValue = pad0(value);
   const inputRef = useRef<HTMLInputElement>(null);
+
+  const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
+    onChange(event);
+  };
 
   const handleFocus = (event: FocusEvent<HTMLInputElement>) => {
     event.target.setSelectionRange(2, 2);
@@ -22,6 +32,7 @@ const TimeInput = ({ value = 0, onFocus, ...props }: TimeInputProps) => {
       <input
         ref={inputRef}
         value={paddedValue}
+        onChange={handleChange}
         className={styles.input}
         type="text"
         onFocus={handleFocus}

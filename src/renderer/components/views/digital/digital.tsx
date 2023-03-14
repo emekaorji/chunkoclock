@@ -12,22 +12,16 @@ type timeValueType = {
   seconds: number;
 };
 
-const getTime = (
-  type: 'seconds' | 'minutes' | 'hours',
-  value: number
-): number => {
+const getTimeFromValue = (value: timeValueType): number => {
+  const hoursInSeconds = value.hours * 60 * 60;
+  const minuteInSeconds = value.minutes * 60;
+  const secondsInSeconds = value.seconds;
+  const total = hoursInSeconds + minuteInSeconds + secondsInSeconds;
+
   const currentTime = new Date();
   const currentSeconds = currentTime.getSeconds();
 
-  if (type === 'seconds') {
-    currentTime.setSeconds(currentSeconds + value);
-  }
-  if (type === 'minutes') {
-    currentTime.setSeconds(currentSeconds + value * 60);
-  }
-  if (type === 'hours') {
-    currentTime.setSeconds(currentSeconds + value * 60 * 60);
-  }
+  currentTime.setSeconds(currentSeconds + total);
 
   return currentTime.getTime();
 };
@@ -38,7 +32,7 @@ const getRemainingSeconds = (futureTime: number): number => {
   return Math.round(remainingSeconds / 1000);
 };
 
-const getValue = (seconds: number): timeValueType => {
+const getValueFromTime = (seconds: number): timeValueType => {
   return {
     hours: Math.floor(seconds / 60 / 60),
     minutes: Math.floor(seconds / 60) % 60,
@@ -53,73 +47,76 @@ const isValidTime = (time: number): boolean => {
 const DEFAULT_TIME_VALUE: timeValueType = { hours: 0, minutes: 10, seconds: 0 };
 
 const Digital = () => {
-  const [storeTime, setStoreTime] = useStore<number>('timer');
+  const [storeTime, setStoreTime] = useStore<{
+    time: number | null;
+    timeUpAck: boolean;
+  }>('timer');
   const [value, setValue] = useState(DEFAULT_TIME_VALUE);
   const [timeUp, setTimeUp] = useState(false);
   const intervalId = useRef<number | undefined>(undefined);
 
+  const updateValue = useCallback(
+    (time: number) => {
+      const remainingSeconds = getRemainingSeconds(time);
+      const seconds = remainingSeconds > 0 ? remainingSeconds : 0;
+      const newValue = getValueFromTime(seconds);
+      setValue(newValue);
+      if (seconds < 1) {
+        setTimeUp(true);
+        setStoreTime({ time: null, timeUpAck: true });
+        window.clearInterval(intervalId.current);
+      }
+    },
+    [setStoreTime]
+  );
+
   const start = useCallback(
-    (timeValue: { hours: number; minutes: number; seconds: number }) => {
-      const hoursInSeconds = timeValue.hours * 60 * 60;
-      const minuteInSeconds = timeValue.minutes * 60;
-      const secondsInSeconds = timeValue.seconds;
-      const total = hoursInSeconds + minuteInSeconds + secondsInSeconds;
-      const time = getTime('seconds', total);
+    (timeValue: timeValueType) => {
+      // dateTime e.g 1678797543131
+      const dateTime = getTimeFromValue(timeValue);
+      updateValue(dateTime);
       intervalId.current = window.setInterval(() => {
-        const remainingSeconds = getRemainingSeconds(time);
-        const seconds = remainingSeconds > 0 ? remainingSeconds : 0;
-        const newValue = getValue(seconds);
-        setValue(newValue);
-        console.log(seconds);
-        if (seconds < 1) {
-          setTimeUp(true);
-          clearInterval(intervalId.current);
-        }
+        updateValue(dateTime);
       }, 1000);
 
-      return time;
+      return dateTime;
     },
-    []
+    [updateValue]
   );
 
-  const handleStart = useCallback(
-    (timeValue: { hours: number; minutes: number; seconds: number }) => {
-      const time = start(timeValue);
-      setStoreTime(time);
-    },
-    [setStoreTime, start]
-  );
-
-  useEffect(() => {
-    if (storeTime && isValidTime(storeTime)) {
-      const seconds = getRemainingSeconds(storeTime);
-      const timeValue = getValue(seconds);
+  const handleTimeOnMount = useCallback(() => {
+    if (storeTime.time && isValidTime(storeTime.time)) {
+      const seconds = getRemainingSeconds(storeTime.time);
+      const timeValue = getValueFromTime(seconds);
       start(timeValue);
     }
-  }, [start, storeTime]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [start]);
 
-  const handlePause = () => {
-    clearInterval(intervalId.current);
-  };
+  useEffect(() => {
+    handleTimeOnMount();
+  }, [handleTimeOnMount]);
 
-  const handleStop = () => {
-    clearInterval(intervalId.current);
-  };
-
-  const handleHoursChange = (event: eventProp) => {
+  // User driven functions
+  const handleStart = useCallback(() => {
+    const time = start(value);
+    setStoreTime({ time, timeUpAck: false });
+  }, [setStoreTime, start, value]);
+  const handlePause = useCallback(() => {
+    window.clearInterval(intervalId.current);
+  }, []);
+  const handleHoursChange = useCallback((event: eventProp) => {
     const intValue = parseInt(event.target.value, 10);
     setValue((prev) => ({ ...prev, hours: intValue }));
-  };
-
-  const handleMinutesChange = (event: eventProp) => {
+  }, []);
+  const handleMinutesChange = useCallback((event: eventProp) => {
     const intValue = parseInt(event.target.value, 10);
     setValue((prev) => ({ ...prev, minutes: intValue }));
-  };
-
-  const handleSecondsChange = (event: eventProp) => {
+  }, []);
+  const handleSecondsChange = useCallback((event: eventProp) => {
     const intValue = parseInt(event.target.value, 10);
     setValue((prev) => ({ ...prev, seconds: intValue }));
-  };
+  }, []);
 
   return (
     <>
@@ -142,7 +139,7 @@ const Digital = () => {
           onFocus={handlePause}
         />
       </div>
-      <button onClick={() => handleStart(value)} type="button">
+      <button onClick={handleStart} type="button">
         Start
       </button>
       <button onClick={handlePause} type="button">
