@@ -1,4 +1,10 @@
-import React, { useCallback, useEffect, useRef, useState } from 'react';
+import React, {
+  useCallback,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from 'react';
 import TimeInput from 'renderer/components/interface/timeInput/timeInput';
 import getClassName from 'renderer/functions/getClassName';
 import useStore from 'renderer/hooks/useStore';
@@ -33,11 +39,21 @@ const getRemainingSeconds = (futureTime: number): number => {
 };
 
 const getValueFromTime = (seconds: number): timeValueType => {
-  return {
-    hours: Math.floor(seconds / 60 / 60),
-    minutes: Math.floor(seconds / 60) % 60,
-    seconds: seconds % 60,
-  };
+  let timeValue;
+  if (seconds > 0) {
+    timeValue = {
+      hours: Math.abs(Math.floor(seconds / 60 / 60)),
+      minutes: Math.abs(Math.floor(seconds / 60) % 60),
+      seconds: Math.abs(seconds % 60),
+    };
+  } else {
+    timeValue = {
+      hours: Math.abs(Math.ceil(seconds / 60 / 60)),
+      minutes: Math.abs(Math.ceil(seconds / 60) % 60),
+      seconds: Math.abs(seconds % 60),
+    };
+  }
+  return timeValue;
 };
 
 const isValidTime = (time: number): boolean => {
@@ -48,6 +64,7 @@ const DEFAULT_TIME_VALUE: timeValueType = { hours: 0, minutes: 10, seconds: 0 };
 
 const Digital = () => {
   const [storeTime, setStoreTime] = useStore<{
+    // seconds: number;
     time: number | null;
     timeUpAck: boolean;
   }>('timer');
@@ -55,16 +72,27 @@ const Digital = () => {
   const [timeUp, setTimeUp] = useState(false);
   const intervalId = useRef<number | undefined>(undefined);
 
+  // const timeUpColor = useMemo(() => {
+  //   const dateTime = getTimeFromValue(value);
+  //   const remainingSeconds = getRemainingSeconds(dateTime);
+  //   let gb = 255;
+  //   if (remainingSeconds < 8) {
+  //     gb = 35 * remainingSeconds;
+  //   }
+
+  //   const color = `rgb(255, ${gb}, ${gb})`;
+
+  //   return color;
+  // }, [value]);
+
   const updateValue = useCallback(
     (time: number) => {
       const remainingSeconds = getRemainingSeconds(time);
-      const seconds = remainingSeconds > 0 ? remainingSeconds : 0;
-      const newValue = getValueFromTime(seconds);
+      const newValue = getValueFromTime(remainingSeconds);
       setValue(newValue);
-      if (seconds < 1) {
+      if (remainingSeconds < 1) {
         setTimeUp(true);
         setStoreTime({ time: null, timeUpAck: true });
-        window.clearInterval(intervalId.current);
       }
     },
     [setStoreTime]
@@ -121,6 +149,7 @@ const Digital = () => {
   return (
     <>
       <div className={styles.digital + getClassName(timeUp, styles.timeUp)}>
+        {timeUp && '-'}
         <TimeInput
           value={value.hours}
           onChange={handleHoursChange}

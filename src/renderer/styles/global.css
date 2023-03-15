@@ -18,3 +18,9 @@ body {
 button {
   appearance: none;
 }
+
+@keyframes blinker {
+  to {
+    opacity: 0;
+  }
+}
