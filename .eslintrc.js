@@ -2,21 +2,30 @@ module.exports = {
   extends: 'erb',
   rules: {
     // A temporary hack related to IDE not resolving correct package.json
+    'consistent-return': 'off',
+    'import/extensions': 'off',
     'import/no-extraneous-dependencies': 'off',
-    'react/react-in-jsx-scope': 'off',
-    'react/jsx-filename-extension': 'off',
-    'react/jsx-no-useless-fragment': 'off',
+    'import/no-import-module-exports': 'off',
+    'import/no-unresolved': 'off',
+    'no-unused-vars': 'warn',
     'react/function-component-definition': [
       2,
       { namedComponents: 'arrow-function' },
     ],
+    'react/jsx-filename-extension': 'off',
+    'react/jsx-no-useless-fragment': 'off',
     'react/jsx-props-no-spreading': 'off',
-    'import/extensions': 'off',
-    'import/no-unresolved': 'off',
-    'import/no-import-module-exports': 'off',
-    'no-unused-vars': 'warn',
-    'consistent-return': 'off',
+    'react/react-in-jsx-scope': 'off',
+    'react/require-default-props': 'off',
   },
+  overrides: [
+    {
+      files: ['*.ts', '*.tsx'],
+      rules: {
+        'no-undef': 'off',
+      },
+    },
+  ],
   parserOptions: {
     ecmaVersion: 2020,
     sourceType: 'module',

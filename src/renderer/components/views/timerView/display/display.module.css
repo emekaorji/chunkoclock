@@ -1,9 +1,9 @@
-.digital {
+.display {
   color: #ffffff;
   font-size: calc(4vmax + 16vw);
   font-weight: 600;
 }
-.digital.timeUp {
+.display.timeUp {
   opacity: 1;
   color: #ff0000;
   animation-name: blinker;
