@@ -11,10 +11,6 @@ const useStore = <T>(
   const [state, setState] = useState<T>(value);
 
   useEffect(() => {
-    setState(value);
-  }, [value]);
-
-  useEffect(() => {
     window.electron.store.set(key, state);
   }, [key, state]);
 

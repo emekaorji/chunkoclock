@@ -1,6 +1,6 @@
-import { timeValueType } from 'renderer/types/timeTypes';
+import { TimeValueType } from 'renderer/types/timeTypes';
 
-export default function getTimeFromValue(value: timeValueType): number {
+export default function getTimeFromValue(value: TimeValueType): number {
   const hoursInSeconds = value.hours * 60 * 60;
   const minuteInSeconds = value.minutes * 60;
   const secondsInSeconds = value.seconds;

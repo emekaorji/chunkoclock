@@ -1,24 +1,29 @@
 import SmallButton from 'renderer/components/interface/buttons/smallButton';
 import PauseIcon from 'renderer/components/interface/icons/pause';
 import PlayIcon from 'renderer/components/interface/icons/play';
-import StopIcon from 'renderer/components/interface/icons/stop';
+import RestartIcon from 'renderer/components/interface/icons/restart';
 import useTimerViewContext from '../hooks/useTimerViewContext';
 import styles from './controls.module.css';
 
 const Controls = () => {
-  const { handleStart, handlePause } = useTimerViewContext();
+  const { isPaused, isPlaying, handleStart, handlePause } =
+    useTimerViewContext();
 
   return (
     <>
       <div className={styles.controls}>
-        <SmallButton onClick={handleStart}>
-          <PlayIcon />
-        </SmallButton>
+        {!isPlaying && (
+          <SmallButton onClick={handleStart}>
+            <PlayIcon />
+          </SmallButton>
+        )}
+        {!isPaused && (
+          <SmallButton onClick={handlePause}>
+            <PauseIcon />
+          </SmallButton>
+        )}
         <SmallButton onClick={handlePause}>
-          <PauseIcon />
-        </SmallButton>
-        <SmallButton onClick={handlePause}>
-          <StopIcon />
+          <RestartIcon />
         </SmallButton>
       </div>
     </>
