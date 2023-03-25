@@ -32,6 +32,7 @@ const TimerViewProvider = ({ children }: TimerViewProviderProps) => {
   const [isPlaying, setIsPlaying] = useState(false);
   const [timeUp, setTimeUp] = useState(false);
   const intervalId = useRef<number | undefined>(undefined);
+  const [isFocused, setIsFocused] = useState(false);
 
   const timeUpAck = useMemo(() => {
     return storeTime.time === null;
@@ -98,6 +99,14 @@ const TimerViewProvider = ({ children }: TimerViewProviderProps) => {
   }, [handlePause, setStoreTime, storeTime.timeInSeconds]);
 
   // Input Events
+  const handleFocus = useCallback(() => {
+    handlePause();
+    setIsFocused(true);
+  }, [handlePause]);
+  const handleBlur = useCallback(() => {
+    setIsFocused(false);
+    handleStart();
+  }, [handleStart]);
   const handleHoursChange = useCallback((event: ChangeEventProp) => {
     const intValue = parseInt(event.target.value, 10);
     setValue((prev) => ({ ...prev, hours: intValue }));
@@ -113,11 +122,14 @@ const TimerViewProvider = ({ children }: TimerViewProviderProps) => {
 
   const providerValue = useMemo(
     () => ({
+      isFocused,
       isPaused,
       isPlaying,
       timeUp,
       timeUpAck,
       value,
+      handleBlur,
+      handleFocus,
       handleHoursChange,
       handleMinutesChange,
       handlePause,
@@ -126,11 +138,14 @@ const TimerViewProvider = ({ children }: TimerViewProviderProps) => {
       handleStart,
     }),
     [
+      isFocused,
       isPaused,
       isPlaying,
       timeUp,
       timeUpAck,
       value,
+      handleBlur,
+      handleFocus,
       handleHoursChange,
       handleMinutesChange,
       handlePause,

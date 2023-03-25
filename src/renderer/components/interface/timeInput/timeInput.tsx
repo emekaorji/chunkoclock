@@ -6,6 +6,7 @@ import React, {
   FocusEventHandler,
   useRef,
 } from 'react';
+import getClassName from 'renderer/functions/getClassName';
 import styles from './timeInput.module.css';
 
 type TimeInputProps = {
@@ -13,7 +14,9 @@ type TimeInputProps = {
   value: number;
   onChange: ChangeEventHandler;
   onFocus: FocusEventHandler;
+  onBlur: FocusEventHandler;
   onEnter?: () => void;
+  className?: string;
 } & React.InputHTMLAttributes<HTMLInputElement>;
 
 const pad0 = (value: number | string) => value.toString().padStart(2, '0');
@@ -23,7 +26,9 @@ const TimeInput = ({
   value = 0,
   onChange,
   onFocus,
+  onBlur,
   onEnter,
+  className,
   ...props
 }: TimeInputProps) => {
   const paddedValue = pad0(value);
@@ -36,6 +41,20 @@ const TimeInput = ({
   const handleFocus = (event: FocusEvent<HTMLInputElement>) => {
     event.target.setSelectionRange(2, 2);
     onFocus(event);
+  };
+
+  const handleBlur = (event: FocusEvent<HTMLInputElement>) => {
+    const { relatedTarget } = event;
+    const inputs = document.querySelectorAll<HTMLInputElement>('.timeInput');
+    if (
+      !(
+        relatedTarget === inputs[0] ||
+        relatedTarget === inputs[1] ||
+        relatedTarget === inputs[2]
+      )
+    ) {
+      onBlur(event);
+    }
   };
 
   const handleEnter = () => {
@@ -78,10 +97,11 @@ const TimeInput = ({
       <input
         ref={inputRef}
         type="text"
-        className={`timeInput ${styles.input}`}
+        className={`timeInput ${styles.input}${getClassName(className)}`}
         value={paddedValue}
         onChange={handleChange}
         onFocus={handleFocus}
+        onBlur={handleBlur}
         onKeyDown={handleKeyDown}
         // @ts-ignore
         onClick={handleFocus}
