@@ -26,10 +26,16 @@ const Display = () => {
           onBlur={handleBlur}
           onChange={handleHoursChange}
           onFocus={handleFocus}
-          className={getClassName(!value.hours && !isFocused, styles.hidden)}
+          className={
+            styles.visible +
+            getClassName(!value.hours && !isFocused, styles.hidden)
+          }
         />
         <span
-          className={getClassName(!value.hours && !isFocused, styles.hidden)}
+          className={
+            styles.visible +
+            getClassName(!value.hours && !isFocused, styles.hidden)
+          }
         >
           :
         </span>
@@ -39,10 +45,16 @@ const Display = () => {
           onBlur={handleBlur}
           onChange={handleMinutesChange}
           onFocus={handleFocus}
-          className={getClassName(!value.minutes && !isFocused, styles.hidden)}
+          className={
+            styles.visible +
+            getClassName(!value.minutes && !isFocused, styles.hidden)
+          }
         />
         <span
-          className={getClassName(!value.minutes && !isFocused, styles.hidden)}
+          className={
+            styles.visible +
+            getClassName(!value.minutes && !isFocused, styles.hidden)
+          }
         >
           :
         </span>

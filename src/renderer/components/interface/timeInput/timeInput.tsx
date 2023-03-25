@@ -57,23 +57,7 @@ const TimeInput = ({
     }
   };
 
-  const handleEnter = () => {
-    const inputs = document.querySelectorAll<HTMLInputElement>('.timeInput');
-    if (name === 'hours') {
-      inputs[1].focus();
-    }
-    if (name === 'minutes') {
-      inputs[2].focus();
-    }
-    if (name === 'seconds') {
-      inputs[2].blur();
-    }
-    if (typeof onEnter === 'function') {
-      onEnter();
-    }
-  };
-
-  const handleShiftEnter = () => {
+  const handleLeftArrow = () => {
     const inputs = document.querySelectorAll<HTMLInputElement>('.timeInput');
     if (name === 'minutes') {
       inputs[0].focus();
@@ -82,6 +66,28 @@ const TimeInput = ({
       inputs[1].focus();
     }
   };
+  const handleRightArrow = () => {
+    const inputs = document.querySelectorAll<HTMLInputElement>('.timeInput');
+    if (name === 'hours') {
+      inputs[1].focus();
+    }
+    if (name === 'minutes') {
+      inputs[2].focus();
+    }
+  };
+  const handleEnter = () => {
+    const inputs = document.querySelectorAll<HTMLInputElement>('.timeInput');
+    handleRightArrow();
+    if (name === 'seconds') {
+      inputs[2].blur();
+    }
+    if (typeof onEnter === 'function') {
+      onEnter();
+    }
+  };
+  const handleShiftEnter = () => {
+    handleLeftArrow();
+  };
 
   const handleKeyDown = (event: KeyboardEvent<HTMLInputElement>) => {
     if (event.key === 'Enter') {
@@ -89,6 +95,12 @@ const TimeInput = ({
     }
     if (event.key === 'Enter' && event.shiftKey) {
       handleShiftEnter();
+    }
+    if (event.key === 'ArrowLeft') {
+      handleLeftArrow();
+    }
+    if (event.key === 'ArrowRight') {
+      handleRightArrow();
     }
   };
 

@@ -35,6 +35,9 @@
     opacity: 1;
   }
 }
+.visible {
+  transition: all 200ms ease;
+}
 .hidden {
   font-size: 0;
 }
