@@ -2,13 +2,15 @@ import { ChangeEventProp } from 'renderer/types/eventTypes';
 import { TimeValueType } from 'renderer/types/timeTypes';
 
 export interface TimerViewContextInterface {
-  value: TimeValueType;
-  timeUp: boolean;
-  isPlaying: boolean;
   isPaused: boolean;
-  handleStart: () => void;
-  handlePause: () => void;
+  isPlaying: boolean;
+  timeUp: boolean;
+  timeUpAck: boolean;
+  value: TimeValueType;
   handleHoursChange: (event: ChangeEventProp) => void;
   handleMinutesChange: (event: ChangeEventProp) => void;
+  handlePause: () => void;
+  handleRestart: () => void;
   handleSecondsChange: (event: ChangeEventProp) => void;
+  handleStart: () => void;
 }

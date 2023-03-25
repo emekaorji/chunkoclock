@@ -18,13 +18,17 @@ const Display = () => {
     <>
       <div className={styles.display + getClassName(timeUp, styles.timeUp)}>
         {timeUp && '-'}
-        <TimeInput
-          name="hours"
-          value={value.hours}
-          onChange={handleHoursChange}
-          onFocus={handlePause}
-        />
-        :
+        {value.hours && (
+          <>
+            <TimeInput
+              name="hours"
+              value={value.hours}
+              onChange={handleHoursChange}
+              onFocus={handlePause}
+            />
+            :
+          </>
+        )}
         <TimeInput
           name="minutes"
           value={value.minutes}

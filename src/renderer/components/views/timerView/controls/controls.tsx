@@ -6,7 +6,7 @@ import useTimerViewContext from '../hooks/useTimerViewContext';
 import styles from './controls.module.css';
 
 const Controls = () => {
-  const { isPaused, isPlaying, handleStart, handlePause } =
+  const { isPlaying, timeUpAck, handlePause, handleRestart, handleStart } =
     useTimerViewContext();
 
   return (
@@ -17,12 +17,12 @@ const Controls = () => {
             <PlayIcon />
           </SmallButton>
         )}
-        {!isPaused && (
+        {isPlaying && !timeUpAck && (
           <SmallButton onClick={handlePause}>
             <PauseIcon />
           </SmallButton>
         )}
-        <SmallButton onClick={handlePause}>
+        <SmallButton onClick={handleRestart}>
           <RestartIcon />
         </SmallButton>
       </div>

@@ -13,28 +13,29 @@ import isValidTime from 'renderer/functions/isValidTime';
 import useStore from 'renderer/hooks/useStore';
 import { ChangeEventProp } from 'renderer/types/eventTypes';
 import { StoreStateType } from 'renderer/types/storeTypes';
-import { TimeValueType } from 'renderer/types/timeTypes';
 import { TimerViewContextInterface } from '../types/contextType';
 
 type TimerViewProviderProps = {
   children: JSX.Element;
 };
 
-const DEFAULT_TIME_VALUE: TimeValueType = { hours: 0, minutes: 0, seconds: 5 };
+const DEFAULT_TIME_IN_SECONDS = 10;
 
 const TimerViewContext = createContext<TimerViewContextInterface | null>(null);
 
 const TimerViewProvider = ({ children }: TimerViewProviderProps) => {
   const [storeTime, setStoreTime] = useStore<StoreStateType>('timer', {
-    timeInSeconds: 5,
+    timeInSeconds: DEFAULT_TIME_IN_SECONDS,
     time: null,
-    timeUpAck: false,
   });
-  const [value, setValue] = useState(DEFAULT_TIME_VALUE);
+  const [value, setValue] = useState(getValueFromTime(DEFAULT_TIME_IN_SECONDS));
   const [isPlaying, setIsPlaying] = useState(false);
   const [timeUp, setTimeUp] = useState(false);
   const intervalId = useRef<number | undefined>(undefined);
 
+  const timeUpAck = useMemo(() => {
+    return storeTime.time === null;
+  }, [storeTime.time]);
   const isPaused = useMemo(() => {
     return !isPlaying;
   }, [isPlaying]);
@@ -44,12 +45,12 @@ const TimerViewProvider = ({ children }: TimerViewProviderProps) => {
       const remainingSeconds = getRemainingSeconds(time);
       const newValue = getValueFromTime(remainingSeconds);
       setValue(newValue);
-      if (remainingSeconds < 1 && !storeTime.timeUpAck) {
+      if (remainingSeconds < 1 && !timeUpAck) {
         setTimeUp(true);
-        setStoreTime((prev) => ({ ...prev, time: null, timeUpAck: true }));
+        setStoreTime((prev) => ({ ...prev, time: null }));
       }
     },
-    [setStoreTime, storeTime.timeUpAck]
+    [setStoreTime, timeUpAck]
   );
   const start = useCallback(
     (dateTime: number) => {
@@ -61,44 +62,42 @@ const TimerViewProvider = ({ children }: TimerViewProviderProps) => {
     },
     [updateValue]
   );
-  const handleTimerOnMount = useCallback(() => {
+
+  useEffect(() => {
     if (storeTime.time && isValidTime(storeTime.time)) {
-      const remainingSeconds = getRemainingSeconds(storeTime.time);
-      if (remainingSeconds < 1 && !storeTime.timeUpAck) {
-        setTimeUp(true);
-        setStoreTime((prev) => ({ ...prev, time: null, timeUpAck: true }));
-      }
       start(storeTime.time);
     }
-  }, [setStoreTime, start, storeTime.time, storeTime.timeUpAck]);
-  useEffect(() => {
-    handleTimerOnMount();
-  }, [handleTimerOnMount]);
+  }, [start, storeTime.time]);
 
-  // User driven functions
+  // Button Events
   const handleStart = useCallback(() => {
     const dateTime = getTimeFromValue(value);
     const seconds = getRemainingSeconds(dateTime);
 
-    start(dateTime);
     if (!storeTime.timeInSeconds) {
       setStoreTime({
         timeInSeconds: seconds,
         time: dateTime,
-        timeUpAck: false,
       });
     } else {
       setStoreTime((prev) => ({
         ...prev,
         time: dateTime,
-        timeUpAck: false,
       }));
     }
-  }, [setStoreTime, start, storeTime.timeInSeconds, value]);
+  }, [setStoreTime, storeTime.timeInSeconds, value]);
   const handlePause = useCallback(() => {
-    console.log(intervalId.current);
     window.clearInterval(intervalId.current);
+    setIsPlaying(false);
   }, []);
+  const handleRestart = useCallback(() => {
+    handlePause();
+    setTimeUp(false);
+    setValue(getValueFromTime(storeTime.timeInSeconds));
+    setStoreTime({ timeInSeconds: DEFAULT_TIME_IN_SECONDS, time: null });
+  }, [handlePause, setStoreTime, storeTime.timeInSeconds]);
+
+  // Input Events
   const handleHoursChange = useCallback((event: ChangeEventProp) => {
     const intValue = parseInt(event.target.value, 10);
     setValue((prev) => ({ ...prev, hours: intValue }));
@@ -114,24 +113,28 @@ const TimerViewProvider = ({ children }: TimerViewProviderProps) => {
 
   const providerValue = useMemo(
     () => ({
-      value,
-      timeUp,
-      isPlaying,
       isPaused,
-      handleStart,
-      handlePause,
+      isPlaying,
+      timeUp,
+      timeUpAck,
+      value,
       handleHoursChange,
       handleMinutesChange,
+      handlePause,
+      handleRestart,
       handleSecondsChange,
+      handleStart,
     }),
     [
-      value,
-      timeUp,
-      isPlaying,
       isPaused,
+      isPlaying,
+      timeUp,
+      timeUpAck,
+      value,
       handleHoursChange,
       handleMinutesChange,
       handlePause,
+      handleRestart,
       handleSecondsChange,
       handleStart,
     ]
