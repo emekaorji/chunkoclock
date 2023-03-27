@@ -19,7 +19,7 @@ type TimerViewProviderProps = {
   children: JSX.Element;
 };
 
-const DEFAULT_TIME_IN_SECONDS = 10;
+const DEFAULT_TIME_IN_SECONDS = 60;
 
 const TimerViewContext = createContext<TimerViewContextInterface | null>(null);
 
@@ -75,7 +75,7 @@ const TimerViewProvider = ({ children }: TimerViewProviderProps) => {
     const dateTime = getTimeFromValue(value);
     const seconds = getRemainingSeconds(dateTime);
 
-    if (!storeTime.timeInSeconds) {
+    if (!storeTime.time) {
       setStoreTime({
         timeInSeconds: seconds,
         time: dateTime,
@@ -86,7 +86,7 @@ const TimerViewProvider = ({ children }: TimerViewProviderProps) => {
         time: dateTime,
       }));
     }
-  }, [setStoreTime, storeTime.timeInSeconds, value]);
+  }, [setStoreTime, storeTime.time, value]);
   const handlePause = useCallback(() => {
     window.clearInterval(intervalId.current);
     setIsPlaying(false);
@@ -100,9 +100,13 @@ const TimerViewProvider = ({ children }: TimerViewProviderProps) => {
 
   // Input Events
   const handleFocus = useCallback(() => {
-    handlePause();
     setIsFocused(true);
-  }, [handlePause]);
+    if (timeUp) {
+      handleRestart();
+      return;
+    }
+    handlePause();
+  }, [handlePause, handleRestart, timeUp]);
   const handleBlur = useCallback(() => {
     setIsFocused(false);
     handleStart();

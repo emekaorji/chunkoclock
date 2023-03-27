@@ -15,3 +15,9 @@
 .input:focus {
   background-color: #fff3;
 }
+.visible {
+  transition: all 200ms ease;
+}
+.hidden {
+  font-size: 0;
+}

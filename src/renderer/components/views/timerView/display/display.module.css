@@ -1,6 +1,6 @@
 .display {
   color: #ffffff;
-  font-size: calc(4vmax + 16vw);
+  font-size: calc(4vmax + 16vw * 1.1);
   font-weight: 600;
 }
 .display.timeUp {
@@ -35,9 +35,15 @@
     opacity: 1;
   }
 }
-.visible {
-  transition: all 200ms ease;
+.display.hoursHidden {
+  font-size: calc(4vmax + 16vw * 2);
 }
-.hidden {
-  font-size: 0;
+.display.minutesHidden {
+  font-size: calc(4vmax + 16vw * 2.5);
+}
+.display.timeUp.hoursHidden {
+  font-size: calc(4vmax + 16vw * 1.5);
+}
+.display.timeUp.minutesHidden {
+  font-size: calc(4vmax + 16vw * 2.5);
 }

@@ -17,6 +17,8 @@ type TimeInputProps = {
   onBlur: FocusEventHandler;
   onEnter?: () => void;
   className?: string;
+  hidden?: boolean;
+  hasColon?: boolean;
 } & React.InputHTMLAttributes<HTMLInputElement>;
 
 const pad0 = (value: number | string) => value.toString().padStart(2, '0');
@@ -29,6 +31,8 @@ const TimeInput = ({
   onBlur,
   onEnter,
   className,
+  hidden = false,
+  hasColon = false,
   ...props
 }: TimeInputProps) => {
   const paddedValue = pad0(value);
@@ -37,12 +41,10 @@ const TimeInput = ({
   const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
     onChange(event);
   };
-
   const handleFocus = (event: FocusEvent<HTMLInputElement>) => {
     event.target.setSelectionRange(2, 2);
     onFocus(event);
   };
-
   const handleBlur = (event: FocusEvent<HTMLInputElement>) => {
     const { relatedTarget } = event;
     const inputs = document.querySelectorAll<HTMLInputElement>('.timeInput');
@@ -88,7 +90,6 @@ const TimeInput = ({
   const handleShiftEnter = () => {
     handleLeftArrow();
   };
-
   const handleKeyDown = (event: KeyboardEvent<HTMLInputElement>) => {
     if (event.key === 'Enter') {
       handleEnter();
@@ -109,7 +110,9 @@ const TimeInput = ({
       <input
         ref={inputRef}
         type="text"
-        className={`timeInput ${styles.input}${getClassName(className)}`}
+        className={`timeInput ${styles.input} ${styles.visible}${getClassName(
+          className
+        )}${getClassName(hidden, styles.hidden)}`}
         value={paddedValue}
         onChange={handleChange}
         onFocus={handleFocus}
@@ -119,6 +122,11 @@ const TimeInput = ({
         onClick={handleFocus}
         {...props}
       />
+      {hasColon && (
+        <span className={styles.visible + getClassName(hidden, styles.hidden)}>
+          :
+        </span>
+      )}
     </>
   );
 };

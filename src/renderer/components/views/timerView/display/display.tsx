@@ -18,7 +18,14 @@ const Display = () => {
 
   return (
     <>
-      <div className={styles.display + getClassName(timeUp, styles.timeUp)}>
+      <div
+        className={
+          styles.display +
+          getClassName(timeUp, styles.timeUp) +
+          getClassName(!value.hours && !isFocused, styles.hoursHidden) +
+          getClassName(!value.minutes && !isFocused, styles.minutesHidden)
+        }
+      >
         {timeUp && '-'}
         <TimeInput
           name="hours"
@@ -26,38 +33,18 @@ const Display = () => {
           onBlur={handleBlur}
           onChange={handleHoursChange}
           onFocus={handleFocus}
-          className={
-            styles.visible +
-            getClassName(!value.hours && !isFocused, styles.hidden)
-          }
+          hidden={!value.hours && !isFocused}
+          hasColon
         />
-        <span
-          className={
-            styles.visible +
-            getClassName(!value.hours && !isFocused, styles.hidden)
-          }
-        >
-          :
-        </span>
         <TimeInput
           name="minutes"
           value={value.minutes}
           onBlur={handleBlur}
           onChange={handleMinutesChange}
           onFocus={handleFocus}
-          className={
-            styles.visible +
-            getClassName(!value.minutes && !isFocused, styles.hidden)
-          }
+          hidden={!value.minutes && !isFocused}
+          hasColon
         />
-        <span
-          className={
-            styles.visible +
-            getClassName(!value.minutes && !isFocused, styles.hidden)
-          }
-        >
-          :
-        </span>
         <TimeInput
           name="seconds"
           value={value.seconds}
