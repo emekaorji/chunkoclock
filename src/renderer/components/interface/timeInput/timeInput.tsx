@@ -14,7 +14,6 @@ type TimeInputProps = {
   value: number;
   onChange: ChangeEventHandler;
   onFocus: FocusEventHandler;
-  onBlur: FocusEventHandler;
   onEnter?: () => void;
   className?: string;
   hidden?: boolean;
@@ -28,7 +27,6 @@ const TimeInput = ({
   value = 0,
   onChange,
   onFocus,
-  onBlur,
   onEnter,
   className,
   hidden = false,
@@ -44,19 +42,6 @@ const TimeInput = ({
   const handleFocus = (event: FocusEvent<HTMLInputElement>) => {
     event.target.setSelectionRange(2, 2);
     onFocus(event);
-  };
-  const handleBlur = (event: FocusEvent<HTMLInputElement>) => {
-    const { relatedTarget } = event;
-    const inputs = document.querySelectorAll<HTMLInputElement>('.timeInput');
-    if (
-      !(
-        relatedTarget === inputs[0] ||
-        relatedTarget === inputs[1] ||
-        relatedTarget === inputs[2]
-      )
-    ) {
-      onBlur(event);
-    }
   };
 
   const handleLeftArrow = () => {
@@ -116,7 +101,6 @@ const TimeInput = ({
         value={paddedValue}
         onChange={handleChange}
         onFocus={handleFocus}
-        onBlur={handleBlur}
         onKeyDown={handleKeyDown}
         // @ts-ignore
         onClick={handleFocus}

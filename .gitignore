@@ -30,3 +30,7 @@ npm-debug.log.*
 
 nba.json
 nba2.json
+
+# Secrets
+.env
+.env.**

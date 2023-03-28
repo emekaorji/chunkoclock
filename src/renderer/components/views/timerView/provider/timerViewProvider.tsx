@@ -10,7 +10,7 @@ import getRemainingSeconds from 'renderer/functions/getRemainingSeconds';
 import getTimeFromValue from 'renderer/functions/getTimeFromValue';
 import getValueFromTime from 'renderer/functions/getValueFromTime';
 import isValidTime from 'renderer/functions/isValidTime';
-import useStore from 'renderer/hooks/useStore';
+import useStore from 'renderer/hooks/data/useStore';
 import { ChangeEventProp } from 'renderer/types/eventTypes';
 import { StoreStateType } from 'renderer/types/storeTypes';
 import { TimerViewContextInterface } from '../types/contextType';
@@ -72,6 +72,7 @@ const TimerViewProvider = ({ children }: TimerViewProviderProps) => {
 
   // Button Events
   const handleStart = useCallback(() => {
+    setIsFocused(false);
     const dateTime = getTimeFromValue(value);
     const seconds = getRemainingSeconds(dateTime);
 
@@ -107,10 +108,6 @@ const TimerViewProvider = ({ children }: TimerViewProviderProps) => {
     }
     handlePause();
   }, [handlePause, handleRestart, timeUp]);
-  const handleBlur = useCallback(() => {
-    setIsFocused(false);
-    handleStart();
-  }, [handleStart]);
   const handleHoursChange = useCallback((event: ChangeEventProp) => {
     const intValue = parseInt(event.target.value, 10);
     setValue((prev) => ({ ...prev, hours: intValue }));
@@ -132,7 +129,6 @@ const TimerViewProvider = ({ children }: TimerViewProviderProps) => {
       timeUp,
       timeUpAck,
       value,
-      handleBlur,
       handleFocus,
       handleHoursChange,
       handleMinutesChange,
@@ -148,7 +144,6 @@ const TimerViewProvider = ({ children }: TimerViewProviderProps) => {
       timeUp,
       timeUpAck,
       value,
-      handleBlur,
       handleFocus,
       handleHoursChange,
       handleMinutesChange,

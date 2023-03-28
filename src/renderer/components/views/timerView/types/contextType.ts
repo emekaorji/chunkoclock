@@ -8,7 +8,6 @@ export interface TimerViewContextInterface {
   timeUp: boolean;
   timeUpAck: boolean;
   value: TimeValueType;
-  handleBlur: () => void;
   handleFocus: () => void;
   handleHoursChange: (event: ChangeEventProp) => void;
   handleMinutesChange: (event: ChangeEventProp) => void;

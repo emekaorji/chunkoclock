@@ -9,7 +9,6 @@ const Display = () => {
     value,
     timeUp,
     handleStart,
-    handleBlur,
     handleFocus,
     handleHoursChange,
     handleMinutesChange,
@@ -30,7 +29,6 @@ const Display = () => {
         <TimeInput
           name="hours"
           value={value.hours}
-          onBlur={handleBlur}
           onChange={handleHoursChange}
           onFocus={handleFocus}
           hidden={!value.hours && !isFocused}
@@ -39,7 +37,6 @@ const Display = () => {
         <TimeInput
           name="minutes"
           value={value.minutes}
-          onBlur={handleBlur}
           onChange={handleMinutesChange}
           onFocus={handleFocus}
           hidden={!value.minutes && !isFocused}
@@ -48,7 +45,6 @@ const Display = () => {
         <TimeInput
           name="seconds"
           value={value.seconds}
-          onBlur={handleBlur}
           onChange={handleSecondsChange}
           onEnter={handleStart}
           onFocus={handleFocus}
