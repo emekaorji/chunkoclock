@@ -1,9 +1,9 @@
 import TimeInput from 'renderer/components/interface/timeInput/timeInput';
 import getClassName from 'renderer/functions/getClassName';
-import useTimerViewContext from '../hooks/useTimerViewContext';
-import styles from './display.module.css';
+import useTimerViewContext from '../../hooks/useTimerViewContext';
+import styles from './timer.module.css';
 
-const Display = () => {
+const Timer = () => {
   const {
     isFocused,
     value,
@@ -19,7 +19,7 @@ const Display = () => {
     <>
       <div
         className={
-          styles.display +
+          styles.timer +
           getClassName(timeUp, styles.timeUp) +
           getClassName(!value.hours && !isFocused, styles.hoursHidden) +
           getClassName(!value.minutes && !isFocused, styles.minutesHidden)
@@ -54,4 +54,4 @@ const Display = () => {
   );
 };
 
-export default Display;
+export default Timer;

@@ -1,9 +1,9 @@
-.display {
+.timer {
   color: #ffffff;
   font-size: calc(4vmax + 16vw * 1.1);
   font-weight: 600;
 }
-.display.timeUp {
+.timer.timeUp {
   opacity: 1;
   color: #ff0000;
   animation-name: blinker;
@@ -35,15 +35,15 @@
     opacity: 1;
   }
 }
-.display.hoursHidden {
+.timer.hoursHidden {
   font-size: calc(4vmax + 16vw * 2);
 }
-.display.minutesHidden {
+.timer.minutesHidden {
   font-size: calc(4vmax + 16vw * 2.5);
 }
-.display.timeUp.hoursHidden {
+.timer.timeUp.hoursHidden {
   font-size: calc(4vmax + 16vw * 1.5);
 }
-.display.timeUp.minutesHidden {
+.timer.timeUp.minutesHidden {
   font-size: calc(4vmax + 16vw * 2.5);
 }
