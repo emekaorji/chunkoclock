@@ -1,0 +1,66 @@
+.menubar {
+  width: 4em;
+  height: 2.65em;
+  background-color: #888888;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  position: absolute;
+  top: 1.2em;
+  padding: 0.8em 0.8em 0.8em 2em;
+  border-radius: 0 1.5em 1.5em 0;
+  overflow: hidden;
+  z-index: 1;
+}
+.menubar div {
+  width: 100%;
+  height: 0.14em;
+  background-color: #ffffff;
+  transition: all 150ms ease-in-out;
+}
+.menubar.isOpen {
+  width: 2.65em;
+  left: 1.35em;
+  padding: 0.8em;
+  border-radius: 50%;
+}
+.menubar.isOpen div.first {
+  width: 0.65em;
+  transform: rotate(-40deg) translate(-0.25em, 0.15em);
+}
+.menubar.isOpen div.third {
+  width: 0.65em;
+  transform: rotate(40deg) translate(-0.25em, -0.15em);
+}
+
+.sidebarTabButtons {
+  display: flex;
+  padding: 1.3em 1em 1em 4.5em;
+}
+.sidebarTabButtons button {
+  white-space: nowrap;
+  flex: 1;
+  padding: 0.6em 0.3em;
+  border-radius: 0.5em;
+}
+.sidebarTabButtons button.activeTab {
+  background-color: #888888;
+  font-weight: 600;
+}
+
+
+.sidebarContainer {
+  position: relative;
+}
+.sidebar {
+  width: 0em;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  z-index: 1;
+  overflow: hidden;
+  border-right: 1px solid #fff5;
+}
+.sidebar.isOpen {
+  width: 25em;
+}

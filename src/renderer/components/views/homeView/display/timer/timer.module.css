@@ -1,11 +1,17 @@
 .timer {
+  max-height: 80vh;
   color: #ffffff;
   font-size: calc(4vmax + 16vw * 1.1);
   font-weight: 600;
+  flex: 1;
+  display: inline-flex;
+  align-items: center;
+  overflow: hidden;
 }
 .timer.timeUp {
   opacity: 1;
   color: #ff0000;
+  font-size: calc(4vmax + 15.6vw);
   animation-name: blinker;
   animation-duration: 1000ms;
   animation-delay: 500ms;
@@ -36,10 +42,10 @@
   }
 }
 .timer.hoursHidden {
-  font-size: calc(4vmax + 16vw * 2);
+  font-size: calc(4vmax + 16vw * 1.85);
 }
 .timer.minutesHidden {
-  font-size: calc(4vmax + 16vw * 2.5);
+  font-size: calc(4vmax + 16vw * 2.7);
 }
 .timer.timeUp.hoursHidden {
   font-size: calc(4vmax + 16vw * 1.5);

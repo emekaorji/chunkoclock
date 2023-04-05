@@ -22,7 +22,10 @@ const Timer = () => {
           styles.timer +
           getClassName(timeUp, styles.timeUp) +
           getClassName(!value.hours && !isFocused, styles.hoursHidden) +
-          getClassName(!value.minutes && !isFocused, styles.minutesHidden)
+          getClassName(
+            !value.minutes && !value.hours && !isFocused,
+            styles.minutesHidden
+          )
         }
       >
         {timeUp && '-'}
@@ -39,7 +42,7 @@ const Timer = () => {
           value={value.minutes}
           onChange={handleMinutesChange}
           onFocus={handleFocus}
-          hidden={!value.minutes && !isFocused}
+          hidden={!value.minutes && !value.hours && !isFocused}
           hasColon
         />
         <TimeInput
