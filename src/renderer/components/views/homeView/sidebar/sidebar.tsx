@@ -3,6 +3,7 @@ import getClassName from 'renderer/functions/getClassName';
 import Agendum from './agendum/agendum';
 import QuickSettings from './quickSettings/quickSettings';
 import styles from './sidebar.module.css';
+import useTimerViewContext from '../hooks/useTimerViewContext';
 
 type MenuBarProps = {
   isOpen: boolean;
@@ -57,17 +58,20 @@ const SidebarTabsButtons = ({
 };
 
 const Sidebar = () => {
-  const [isOpen, setIsOpen] = useState(false);
+  const { menuIsOpen, toggleSidebar } = useTimerViewContext();
   const [activeTab, setActiveTab] = useState(0);
 
-  const toggleSidebar = () => setIsOpen(!isOpen);
   const switchTab = (index: number) => setActiveTab(index);
 
   return (
     <>
-      <div className={styles.sidebarContainer}>
-        <MenuBar isOpen={isOpen} handleClick={toggleSidebar} />
-        <div className={styles.sidebar + getClassName(isOpen, styles.isOpen)}>
+      <div
+        className={
+          styles.sidebarContainer + getClassName(menuIsOpen, styles.isOpen)
+        }
+      >
+        <MenuBar isOpen={menuIsOpen} handleClick={toggleSidebar} />
+        <div className={styles.sidebar}>
           <SidebarTabsButtons activeTab={activeTab} switchTab={switchTab} />
           <div className={styles.sidebarTabs}>
             {activeTab === 0 && <Agendum />}

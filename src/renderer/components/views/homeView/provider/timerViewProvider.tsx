@@ -33,6 +33,7 @@ const TimerViewProvider = ({ children }: TimerViewProviderProps) => {
   const [timeUp, setTimeUp] = useState(false);
   const intervalId = useRef<number | undefined>(undefined);
   const [isFocused, setIsFocused] = useState(false);
+  const [menuIsOpen, setMenuIsOpen] = useState(false);
 
   const timeUpAck = useMemo(() => {
     return storeTime.time === null;
@@ -121,11 +122,14 @@ const TimerViewProvider = ({ children }: TimerViewProviderProps) => {
     setValue((prev) => ({ ...prev, seconds: intValue }));
   }, []);
 
+  const toggleSidebar = useCallback(() => setMenuIsOpen((prev) => !prev), []);
+
   const providerValue = useMemo(
     () => ({
       isFocused,
       isPaused,
       isPlaying,
+      menuIsOpen,
       timeUp,
       timeUpAck,
       value,
@@ -136,11 +140,13 @@ const TimerViewProvider = ({ children }: TimerViewProviderProps) => {
       handleRestart,
       handleSecondsChange,
       handleStart,
+      toggleSidebar,
     }),
     [
       isFocused,
       isPaused,
       isPlaying,
+      menuIsOpen,
       timeUp,
       timeUpAck,
       value,
@@ -151,6 +157,7 @@ const TimerViewProvider = ({ children }: TimerViewProviderProps) => {
       handleRestart,
       handleSecondsChange,
       handleStart,
+      toggleSidebar,
     ]
   );
 

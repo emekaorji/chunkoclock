@@ -33,6 +33,7 @@
   transform: rotate(40deg) translate(-0.25em, -0.15em);
 }
 
+
 .sidebarTabButtons {
   display: flex;
   padding: 1.3em 1em 1em 4.5em;
@@ -50,17 +51,22 @@
 
 
 .sidebarContainer {
-  position: relative;
-}
-.sidebar {
   width: 0em;
   height: 100vh;
+  position: relative;
+}
+.sidebarContainer.isOpen {
+  width: 33em;
+}
+.sidebar {
+  width: 100%;
+  height: 100%;
   display: flex;
   flex-direction: column;
   z-index: 1;
   overflow: hidden;
   border-right: 1px solid #fff5;
 }
-.sidebar.isOpen {
-  width: 25em;
+.sidebarTabs {
+  height: 100%;
 }

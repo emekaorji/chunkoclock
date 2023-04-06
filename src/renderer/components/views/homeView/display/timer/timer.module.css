@@ -18,6 +18,9 @@
   animation-iteration-count: infinite;
   animation-direction: alternate;
 }
+.timer.menuIsOpen {
+  font-size: calc(4vmax + 16vw * 0.66);
+}
 @keyframes blinker {
   0% {
     opacity: 1;
@@ -44,12 +47,24 @@
 .timer.hoursHidden {
   font-size: calc(4vmax + 16vw * 1.85);
 }
+.timer.hoursHidden.menuIsOpen {
+  font-size: calc(4vmax + 16vw * 1.15);
+}
 .timer.minutesHidden {
   font-size: calc(4vmax + 16vw * 2.7);
+}
+.timer.minutesHidden.menuIsOpen {
+  font-size: calc(4vmax + 16vw * 2.5);
 }
 .timer.timeUp.hoursHidden {
   font-size: calc(4vmax + 16vw * 1.5);
 }
+.timer.timeUp.hoursHidden.menuIsOpen {
+  font-size: calc(4vmax + 16vw * 1);
+}
 .timer.timeUp.minutesHidden {
   font-size: calc(4vmax + 16vw * 2.5);
+}
+.timer.timeUp.minutesHidden.menuIsOpen {
+  font-size: calc(4vmax + 16vw * 2.15);
 }
