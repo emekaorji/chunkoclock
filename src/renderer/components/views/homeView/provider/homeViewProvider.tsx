@@ -12,28 +12,39 @@ import getValueFromTime from 'renderer/functions/getValueFromTime';
 import isValidTime from 'renderer/functions/isValidTime';
 import useStore from 'renderer/hooks/data/useStore';
 import { ChangeEventProp } from 'renderer/types/eventTypes';
-import { StoreStateType } from 'renderer/types/storeTypes';
-import { TimerViewContextInterface } from '../types/contextType';
+import { StoreStateType, TimeSlot } from 'renderer/types/storeTypes';
+import { HomeViewContextInterface } from '../types/contextType';
 
-type TimerViewProviderProps = {
+type HomeViewProviderProps = {
   children: JSX.Element;
 };
 
 const DEFAULT_TIME_IN_SECONDS = 60;
 
-const TimerViewContext = createContext<TimerViewContextInterface | null>(null);
+const HomeViewContext = createContext<HomeViewContextInterface | null>(null);
 
-const TimerViewProvider = ({ children }: TimerViewProviderProps) => {
+const HomeViewProvider = ({ children }: HomeViewProviderProps) => {
   const [storeTime, setStoreTime] = useStore<StoreStateType>('timer', {
     timeInSeconds: DEFAULT_TIME_IN_SECONDS,
     time: null,
   });
+  const [agendum, setAgendum] = useStore<TimeSlot[]>('agendum', []);
   const [value, setValue] = useState(getValueFromTime(DEFAULT_TIME_IN_SECONDS));
   const [isPlaying, setIsPlaying] = useState(false);
   const [timeUp, setTimeUp] = useState(false);
   const intervalId = useRef<number | undefined>(undefined);
   const [isFocused, setIsFocused] = useState(false);
   const [menuIsOpen, setMenuIsOpen] = useState(false);
+
+  const updateAgendum = useCallback(
+    (newTimeSlot: TimeSlot) => {
+      setAgendum((prev) => {
+        prev.push(newTimeSlot);
+        return [...prev];
+      });
+    },
+    [setAgendum]
+  );
 
   const timeUpAck = useMemo(() => {
     return storeTime.time === null;
@@ -126,6 +137,7 @@ const TimerViewProvider = ({ children }: TimerViewProviderProps) => {
 
   const providerValue = useMemo(
     () => ({
+      agendum,
       isFocused,
       isPaused,
       isPlaying,
@@ -141,8 +153,10 @@ const TimerViewProvider = ({ children }: TimerViewProviderProps) => {
       handleSecondsChange,
       handleStart,
       toggleSidebar,
+      updateAgendum,
     }),
     [
+      agendum,
       isFocused,
       isPaused,
       isPlaying,
@@ -158,15 +172,16 @@ const TimerViewProvider = ({ children }: TimerViewProviderProps) => {
       handleSecondsChange,
       handleStart,
       toggleSidebar,
+      updateAgendum,
     ]
   );
 
   return (
-    <TimerViewContext.Provider value={providerValue}>
+    <HomeViewContext.Provider value={providerValue}>
       {children}
-    </TimerViewContext.Provider>
+    </HomeViewContext.Provider>
   );
 };
 
-export { TimerViewContext };
-export default TimerViewProvider;
+export { HomeViewContext };
+export default HomeViewProvider;

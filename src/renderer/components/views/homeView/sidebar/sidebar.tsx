@@ -3,7 +3,7 @@ import getClassName from 'renderer/functions/getClassName';
 import Agendum from './agendum/agendum';
 import QuickSettings from './quickSettings/quickSettings';
 import styles from './sidebar.module.css';
-import useTimerViewContext from '../hooks/useTimerViewContext';
+import useTimerViewContext from '../hooks/useHomeViewContext';
 
 type MenuBarProps = {
   isOpen: boolean;

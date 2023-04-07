@@ -1,7 +1,8 @@
 import { ChangeEventProp } from 'renderer/types/eventTypes';
+import { TimeSlot } from 'renderer/types/storeTypes';
 import { TimeValueType } from 'renderer/types/timeTypes';
 
-export interface TimerViewContextInterface {
+export interface HomeViewContextInterface {
   isFocused: boolean;
   isPaused: boolean;
   isPlaying: boolean;
@@ -17,4 +18,5 @@ export interface TimerViewContextInterface {
   handleSecondsChange: (event: ChangeEventProp) => void;
   handleStart: () => void;
   toggleSidebar: () => void;
+  updateAgendum: (timeSlot: TimeSlot) => void;
 }

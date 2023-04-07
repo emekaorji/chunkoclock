@@ -1,7 +1,7 @@
 import Display from './display/display';
-import TimerViewProvider from './provider/timerViewProvider';
+import HomeViewProvider from './provider/homeViewProvider';
 import Sidebar from './sidebar/sidebar';
-// import styles from './timerView.module.css';
+// import styles from './homeView.module.css';
 
 const HomeViewContent = () => {
   return (
@@ -14,9 +14,9 @@ const HomeViewContent = () => {
 
 const HomeView = () => {
   return (
-    <TimerViewProvider>
+    <HomeViewProvider>
       <HomeViewContent />
-    </TimerViewProvider>
+    </HomeViewProvider>
   );
 };
 

@@ -1,6 +1,6 @@
 import TimeInput from 'renderer/components/interface/timeInput/timeInput';
 import getClassName from 'renderer/functions/getClassName';
-import useTimerViewContext from '../../hooks/useTimerViewContext';
+import useHomeViewContext from '../../hooks/useHomeViewContext';
 import styles from './timer.module.css';
 
 const Timer = () => {
@@ -14,7 +14,7 @@ const Timer = () => {
     handleHoursChange,
     handleMinutesChange,
     handleSecondsChange,
-  } = useTimerViewContext();
+  } = useHomeViewContext();
 
   return (
     <>

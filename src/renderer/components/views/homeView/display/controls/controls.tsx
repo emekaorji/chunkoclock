@@ -2,12 +2,12 @@ import SmallButton from 'renderer/components/interface/buttons/smallButton';
 import PauseIcon from 'renderer/components/interface/icons/pause';
 import PlayIcon from 'renderer/components/interface/icons/play';
 import RestartIcon from 'renderer/components/interface/icons/restart';
-import useTimerViewContext from '../../hooks/useTimerViewContext';
+import useHomeViewContext from '../../hooks/useHomeViewContext';
 import styles from './controls.module.css';
 
 const Controls = () => {
   const { isPlaying, timeUpAck, handlePause, handleRestart, handleStart } =
-    useTimerViewContext();
+    useHomeViewContext();
 
   return (
     <>

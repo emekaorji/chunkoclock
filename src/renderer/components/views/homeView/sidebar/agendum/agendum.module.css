@@ -3,6 +3,7 @@
   position: relative;
 }
 .addButton {
+  font-size: 0.85em;
   position: absolute;
   bottom: 2em;
   left: 50%;
