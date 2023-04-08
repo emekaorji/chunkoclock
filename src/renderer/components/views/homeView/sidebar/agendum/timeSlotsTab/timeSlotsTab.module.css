@@ -1,0 +1,7 @@
+.addButton {
+  font-size: 0.85em;
+  position: absolute;
+  bottom: 2em;
+  left: 50%;
+  transform: translateX(-50%);
+}

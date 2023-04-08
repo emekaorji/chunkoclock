@@ -15,6 +15,30 @@ body {
   font-family: 'Work Sans', sans-serif;
   overflow-y: hidden;
 }
+@media screen and (hover: hover) {
+  *::-webkit-scrollbar {
+    width: .5em;
+    height: .5em;
+    background-color: #12100399;
+  }
+  *::-webkit-scrollbar-corner {
+    background-color: #12100399;
+  }
+  *::-webkit-scrollbar-thumb {
+    background-color: #121003;
+    border-radius: 1em;
+    border: 1px solid #221e0699;
+  }
+  *::-webkit-scrollbar-thumb:hover {
+    background-color: #1c1a05;
+    border-color: #221e06AA;
+  }
+  *::-webkit-scrollbar-thumb:active {
+    background-color: #242006;
+    border-color: #221e06CC;
+    border-width: 2px;
+  }
+}
 
 button {
   background-color: transparent;
@@ -30,6 +54,14 @@ button {
 img, svg {
   width: 100%;
   height: 100%;
+}
+input {
+  background-color: transparent;
+  color: inherit;
+  font-size: inherit;
+  font-family: inherit;
+  border: none;
+  outline: none;
 }
 #root {
   width: 100%;

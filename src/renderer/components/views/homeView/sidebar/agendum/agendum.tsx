@@ -1,15 +1,15 @@
-import PlusIcon from 'renderer/components/interface/icons/plus';
-import SmallButton from 'renderer/components/interface/buttons/smallButton';
+import { useState } from 'react';
 import styles from './agendum.module.css';
+import ProgramsTab from './programsTab/programsTab';
+import TimeslotsTab from './timeSlotsTab/timeSlotsTab';
 
 const Agendum = () => {
+  const [activeTab, setActiveTab] = useState(0);
+
   return (
     <>
-      <div className={styles.agendumContainer}>
-        <SmallButton type="button" className={styles.addButton}>
-          <PlusIcon />
-        </SmallButton>
-      </div>
+      {activeTab === 0 && <ProgramsTab />}
+      {activeTab === 1 && <TimeslotsTab />}
     </>
   );
 };

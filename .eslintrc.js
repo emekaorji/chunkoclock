@@ -7,6 +7,7 @@ module.exports = {
     'import/no-extraneous-dependencies': 'off',
     'import/no-import-module-exports': 'off',
     'import/no-unresolved': 'off',
+    'jsx-a11y/control-has-associated-label': 'off',
     'no-unused-vars': 'warn',
     'react/function-component-definition': [
       2,

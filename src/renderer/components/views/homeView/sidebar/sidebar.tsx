@@ -73,10 +73,8 @@ const Sidebar = () => {
         <MenuBar isOpen={menuIsOpen} handleClick={toggleSidebar} />
         <div className={styles.sidebar}>
           <SidebarTabsButtons activeTab={activeTab} switchTab={switchTab} />
-          <div className={styles.sidebarTabs}>
-            {activeTab === 0 && <Agendum />}
-            {activeTab === 1 && <QuickSettings />}
-          </div>
+          {activeTab === 0 && <Agendum />}
+          {activeTab === 1 && <QuickSettings />}
         </div>
       </div>
     </>

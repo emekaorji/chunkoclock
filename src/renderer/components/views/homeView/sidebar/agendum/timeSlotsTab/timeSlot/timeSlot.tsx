@@ -1,4 +1,4 @@
-import styles from './timeslot.module.css';
+import styles from './timeSlot.module.css';
 
 type TimeslotProps = {
   title: string;
