@@ -21,24 +21,38 @@
   font-style: italic;
   color: #FFFFFF88;
 }
-.editButton {
-  width: 1.1em;
-  height: 1.1em;
+.hiddenButtons {
   opacity: 0;
-  color: #FFFFFF77;
   display: flex;
-  justify-content: center;
-  align-items: center;
+  gap: 0;
   position: absolute;
   top: 0.5em;
   right: 0.5em;
 }
-.editButton:hover {
+.program:hover .hiddenButtons {
+  opacity: 1;
+  gap: 0.4em;
+}
+.hiddenButtons button {
+  width: 1.1em;
+  height: 1.1em;
+  filter: brightness(70%);
   color: #FFFFFFAA;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.hiddenButtons button:hover {
+  filter: brightness(100%);
   transform: scale(1.05);
 }
-.program:hover .editButton {
-  opacity: 1;
+.hiddenButtons .deleteButton {
+  width: 0;
+  color: #FF4545AA;
+  transition: width 250ms ease;
+}
+.program:hover .deleteButton {
+  width: 1.1em;
 }
 .saveButton {
   background-color: #e0c022;

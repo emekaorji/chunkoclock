@@ -1,6 +1,8 @@
 import { ChangeEvent, useRef, useState } from 'react';
 import PenIcon from 'renderer/components/interface/icons/pen';
 import useOnClickOutside from 'renderer/hooks/view/useOnClickOutside';
+import TrashIcon from 'renderer/components/interface/icons/trash';
+import ThemeInput from 'renderer/components/interface/themeInput/themeInput';
 import styles from './program.module.css';
 
 type ProgramProps = {
@@ -11,16 +13,19 @@ type ProgramProps = {
 };
 const Program = ({ id, title, date, theme }: ProgramProps) => {
   const [inputTitle, setInputTitle] = useState(title);
-  const [isFocused, setIsFocused] = useState(false);
+  const [isEditing, setIsEditing] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
 
   const handleInputChange = (event: ChangeEvent<HTMLInputElement>) => {
     setInputTitle(event.target.value);
   };
-  const handleFocus = () => setIsFocused(true);
+  const handleEdit = () => setIsEditing(true);
   const handleSave = () => {
     // Do some things
-    setIsFocused(false);
+    setIsEditing(false);
+  };
+  const handleClick = () => {
+    console.log('clicked', id);
   };
 
   useOnClickOutside(containerRef, handleSave);
@@ -34,25 +39,37 @@ const Program = ({ id, title, date, theme }: ProgramProps) => {
             className={styles.input}
             value={inputTitle}
             onChange={handleInputChange}
-            disabled={!isFocused}
+            disabled={!isEditing}
           />
         </div>
-        {isFocused ? (
-          <input type="date" />
+        {isEditing ? (
+          <>
+            <input type="date" />
+            <ThemeInput />
+          </>
         ) : (
           <div className={styles.date}>{date}</div>
         )}
-        {!isFocused && (
-          <button type="button" className={styles.clickableOverlay} />
-        )}
-        {!isFocused ? (
+        {!isEditing && (
           <button
             type="button"
-            className={styles.editButton}
-            onClick={handleFocus}
-          >
-            <PenIcon />
-          </button>
+            className={styles.clickableOverlay}
+            onClick={handleClick}
+          />
+        )}
+        {!isEditing ? (
+          <div className={styles.hiddenButtons}>
+            <button
+              type="button"
+              className={styles.editButton}
+              onClick={handleEdit}
+            >
+              <PenIcon />
+            </button>
+            <button type="button" className={styles.deleteButton}>
+              <TrashIcon />
+            </button>
+          </div>
         ) : (
           <button
             type="button"

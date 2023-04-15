@@ -5,6 +5,7 @@ import LoginView from './components/views/loginView/loginView';
 import SignupView from './components/views/signupView/signupView';
 // import Hourglass from './components/views/hourglass/hourglass';
 import './styles/global.css';
+import './styles/variables.css';
 
 const App = () => {
   return (

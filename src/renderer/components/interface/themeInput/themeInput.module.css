@@ -1,0 +1,83 @@
+.colorDiscs {
+  background-color: #FFFFFF44;
+  display: flex;
+  padding: 0.2em;
+  border-radius: 0.4em;
+}
+.colorDiscs:hover {
+  background-color: #FFFFFF88;
+}
+.colorDiscs div {
+  width: 1em;
+  height: 1em;
+  display: inline-block;
+  border-radius: 50%;
+}
+.secondary {
+  margin-left: -0.5em;
+}
+.monotone .primary {
+  background-color: #000000;
+}
+.monotone .secondary {
+  background-color: #FFFFFF;
+}
+.brainsprain .primary {
+  background-color: #E0C022;
+}
+.brainsprain .secondary {
+  background-color: #000000;
+}
+.liquidstone .primary {
+  background-color: #020E12;
+}
+.liquidstone .secondary {
+  background-color: #98AD06;
+}
+.curlystick .primary {
+  background-color: #040518;
+}
+.curlystick .secondary {
+  background-color: #E89B19;
+}
+.talldwarf .primary {
+  background-color: #B9BAC5;
+}
+.talldwarf .secondary {
+  background-color: #4440B3;
+}
+.envoys .primary {
+  background-color: #B9BAC5;
+}
+.envoys .secondary {
+  background-color: #008000;
+}
+.vsaandpoe .primary {
+  background-color: #4DA8D5;
+}
+.vsaandpoe .secondary {
+  background-color: #04053E;
+}
+
+.themeContainer {
+  position: relative;
+}
+.themes {
+  width: 7em;
+  background-color: #FFFFFF44;
+  backdrop-filter: blur(6px);
+  opacity: 0;
+  display: flex;
+  gap: 0.3em;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  position: absolute;
+  top: 105%;
+  padding: 0.3em;
+  border-radius: 0.4em;
+  z-index: 1;
+}
+.themes.isOpen {
+  opacity: 1;
+  top: 105%;
+}

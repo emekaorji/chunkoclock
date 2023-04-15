@@ -28,8 +28,7 @@ npm-debug.log.*
 *.sass.d.ts
 *.scss.d.ts
 
-nba.json
-nba2.json
+nba*.json
 
 # Secrets
 .env

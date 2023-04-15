@@ -1,0 +1,22 @@
+:root {
+  --monotone-primary: #000000;
+  --monotone-secondary: #000000;
+
+  --brainsprain-primary: #E0C022;
+  --brainsprain-secondary: #000000;
+
+  --liquidstone-primary: #020E12;
+  --liquidstone-secondary: #98AD06;
+
+  --curlystick-primary: #040518;
+  --curlystick-secondary: #E89B19;
+
+  --talldwarf-primary: #B9BAC5;
+  --talldwarf-secondary: #4440B3;
+
+  --envoys-primary: #B9BAC5;
+  --envoys-secondary: #008000;
+
+  --vsaandpoe-primary: #4DA8D5;
+  --vsaandpoe-secondary: #04053E;
+}
