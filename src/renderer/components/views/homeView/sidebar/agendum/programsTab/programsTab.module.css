@@ -8,11 +8,9 @@
   flex-direction: column;
   gap: 0.6em;
   padding: 0.6em;
-  overflow-y: auto;
+  overflow-y: scroll;
   padding-bottom: 7em;
-}
-.programsContainer * {
-  overflow-anchor: none;
+  scroll-behavior: smooth;
 }
 .anchor {
   overflow-anchor: auto;

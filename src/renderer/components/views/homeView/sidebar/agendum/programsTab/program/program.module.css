@@ -1,5 +1,6 @@
 .program {
   background-color: #88888855;
+  opacity: 1;
   color: #DDDDDD;
   display: flex;
   gap: 0.5em;
@@ -7,6 +8,69 @@
   position: relative;
   padding: 0.3em;
   border-radius: 0.5em;
+  transition: opacity 100ms ease;
+}
+.program.isDeleting {
+  opacity: 0;
+  overflow: hidden;
+  animation: close 200ms ease forwards;
+}
+@keyframes close {
+  0% {
+    min-height: 4em;
+    padding-top: 0.3em;
+    padding-bottom: 0.3em;
+  }
+  10% {
+    min-height: 3.6em;
+    padding-top: 0.27em;
+    padding-bottom: 0.27em;
+  }
+  20% {
+    min-height: 3.2em;
+    padding-top: 0.24em;
+    padding-bottom: 0.24em;
+  }
+  30% {
+    min-height: 2.8em;
+    padding-top: 0.21em;
+    padding-bottom: 0.21em;
+  }
+  40% {
+    min-height: 2.4em;
+    padding-top: 0.18em;
+    padding-bottom: 0.18em;
+  }
+  50% {
+    min-height: 2em;
+    padding-top: 0.15em;
+    padding-bottom: 0.15em;
+  }
+  60% {
+    min-height: 1.6em;
+    padding-top: 0.12em;
+    padding-bottom: 0.12em;
+  }
+  70% {
+    min-height: 1.2em;
+    padding-top: 0.9em;
+    padding-bottom: 0.9em;
+  }
+  80% {
+    min-height: 0.8em;
+    padding-top: 0.6em;
+    padding-bottom: 0.6em;
+  }
+  90% {
+    min-height: 0.4em;
+    padding-top: 0.3em;
+    padding-bottom: 0.3em;
+  }
+  100% {
+    min-height: 0em;
+    padding-top: 0em;
+    padding-bottom: 0em;
+  }
 }
 .inputContainer {
   display: flex;
@@ -14,8 +78,18 @@
   align-items: center;
 }
 .input, .title {
+  max-width: 80%;
   font-size: 1.6em;
   font-weight: 600;
+}
+.title {
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+}
+.secondaryInput {
+  display: flex;
+  justify-content: space-between;
 }
 .date {
   font-style: italic;

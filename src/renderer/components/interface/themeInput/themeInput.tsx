@@ -1,79 +1,120 @@
 import getClassName from 'renderer/functions/getClassName';
-import { MouseEventHandler, useState } from 'react';
-import { ClickEventProp } from 'renderer/types/eventTypes';
+import { useMemo, useRef, useState } from 'react';
+import useOnClickOutside from 'renderer/hooks/view/useOnClickOutside';
 import styles from './themeInput.module.css';
 
-type ColorDiscsProps = {
-  onClick: MouseEventHandler<HTMLButtonElement>;
-} & React.ButtonHTMLAttributes<HTMLButtonElement>;
-const ColorDiscs = ({ className, onClick }: ColorDiscsProps) =>
-  function (theme: string) {
-    const handleClick = (event: ClickEventProp) => {
-      if (typeof onClick === 'function') onClick(event);
-    };
-
-    return (
-      <>
-        <button
-          type="button"
-          className={`${styles.colorDiscs} ${styles[theme]}${getClassName(
-            className
-          )}`}
-          onClick={handleClick}
-        >
-          <div className={styles.primary} />
-          <div className={styles.secondary} />
-        </button>
-      </>
-    );
+type Theme =
+  | 'monotone'
+  | 'brainsprain'
+  | 'liquidstone'
+  | 'curlystick'
+  | 'talldwarf'
+  | 'envoys'
+  | 'vsaandpoe';
+interface ThemeEvent {
+  target: {
+    name: string;
+    value: Theme;
   };
-
-interface IColor {
-  [key: string]: (props: ColorDiscsProps) => JSX.Element;
 }
 
-const Color: IColor = {
-  Monotone: (props) => ColorDiscs(props)('monotone'),
-  BrainSprain: (props) => ColorDiscs(props)('brainsprain'),
-  LiquidStone: (props) => ColorDiscs(props)('liquidstone'),
-  CurlyStick: (props) => ColorDiscs(props)('curlystick'),
-  TallDwarf: (props) => ColorDiscs(props)('talldwarf'),
-  Envoys: (props) => ColorDiscs(props)('envoys'),
-  VSAandPOE: (props) => ColorDiscs(props)('vsaandpoe'),
+type ColorProps = {
+  value: Theme;
+  selected?: Theme;
+  handleChange: (newValue: Theme) => void;
+} & React.ButtonHTMLAttributes<HTMLButtonElement>;
+type ThemeInputProps = {
+  name?: string;
+  value: Theme;
+  onChange: (event: ThemeEvent) => void;
 };
 
-const ThemeInput = () => {
-  const [isOpen, setIsOpen] = useState(false);
+const Color = ({ value, selected, className, handleChange }: ColorProps) => {
+  const handleClick = () => {
+    handleChange(value);
+  };
 
-  const toggleThemes = () => setIsOpen(!isOpen);
+  const isSelected = useMemo(() => value === selected, [selected, value]);
 
   return (
     <>
-      <div className={styles.themeContainer}>
-        <Color.Monotone className={styles.placeholder} onClick={toggleThemes} />
+      <button
+        type="button"
+        className={`${styles.colorDiscs} ${styles[value]}${getClassName(
+          className
+        )}${getClassName(isSelected, styles.isSelected)}`}
+        onClick={handleClick}
+      >
+        <div className={styles.primary} />
+        <div className={styles.secondary} />
+      </button>
+    </>
+  );
+};
+const ThemeInput = ({ name = '', value, onChange }: ThemeInputProps) => {
+  const [isOpen, setIsOpen] = useState(false);
+  const containerRef = useRef<HTMLDivElement>(null);
+
+  const toggleThemes = () => setIsOpen(!isOpen);
+  const closeThemes = () => setIsOpen(false);
+
+  const handleChange = (newValue: Theme) => {
+    const customEvent = {
+      target: {
+        name,
+        value: newValue,
+      },
+    };
+    onChange(customEvent);
+  };
+
+  useOnClickOutside(containerRef, closeThemes);
+
+  return (
+    <>
+      <div className={styles.themeContainer} ref={containerRef}>
+        <Color
+          value={value}
+          className={styles.placeholder}
+          handleChange={toggleThemes}
+        />
         <div className={styles.themes + getClassName(isOpen, styles.isOpen)}>
-          <Color.Monotone onClick={() => {}} />
-          <Color.BrainSprain onClick={() => {}} />
-          <Color.LiquidStone onClick={() => {}} />
-          <Color.CurlyStick onClick={() => {}} />
-          <Color.TallDwarf onClick={() => {}} />
-          <Color.Envoys onClick={() => {}} />
-          <Color.VSAandPOE onClick={() => {}} />
+          <Color
+            value="monotone"
+            selected={value}
+            handleChange={handleChange}
+          />
+          <Color
+            value="brainsprain"
+            selected={value}
+            handleChange={handleChange}
+          />
+          <Color
+            value="liquidstone"
+            selected={value}
+            handleChange={handleChange}
+          />
+          <Color
+            value="curlystick"
+            selected={value}
+            handleChange={handleChange}
+          />
+          <Color
+            value="talldwarf"
+            selected={value}
+            handleChange={handleChange}
+          />
+          <Color value="envoys" selected={value} handleChange={handleChange} />
+          <Color
+            value="vsaandpoe"
+            selected={value}
+            handleChange={handleChange}
+          />
         </div>
       </div>
     </>
   );
 };
 
+export { Theme, ThemeEvent };
 export default ThemeInput;
-
-/**
- * Name Primary Secondary
- * Monotone #000000 #FFFFFF
- * Brain Sprain #E0C022 #000000
- * Liquid Stone #020E12 #98AD06
- * Curly Stick #040518 #E89B19
- * Tall Dwarf #B9BAC5 #4440B3
- * Envoys #B9BAC5 #008000
- * VSA & POE #4DA8D5 #04053E
- */
