@@ -8,7 +8,7 @@ module.exports = {
     'import/no-import-module-exports': 'off',
     'import/no-unresolved': 'off',
     'jsx-a11y/control-has-associated-label': 'off',
-    'no-unused-vars': 'warn',
+    'no-unused-vars': ['warn', { argsIgnorePattern: '^_' }],
     'react/function-component-definition': [
       2,
       { namedComponents: 'arrow-function' },

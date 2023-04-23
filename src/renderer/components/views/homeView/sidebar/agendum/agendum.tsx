@@ -1,16 +1,24 @@
-import { useState } from 'react';
 import styles from './agendum.module.css';
 import ProgramsTab from './programsTab/programsTab';
-import TimeslotsTab from './timeSlotsTab/timeSlotsTab';
+import TimeSlotsTab from './timeSlotsTab/timeSlotsTab';
+import AgendumProvider from './provider/agendumProvider';
 
-const Agendum = () => {
-  const [activeTab, setActiveTab] = useState(0);
-
+const AgendumContent = () => {
   return (
     <>
-      {activeTab === 0 && <ProgramsTab />}
-      {activeTab === 1 && <TimeslotsTab />}
+      <div className={styles.agendumContainer}>
+        <ProgramsTab />
+        <TimeSlotsTab />
+      </div>
     </>
+  );
+};
+
+const Agendum = () => {
+  return (
+    <AgendumProvider>
+      <AgendumContent />
+    </AgendumProvider>
   );
 };
 

@@ -27,7 +27,7 @@ const MenuBar = ({ isOpen, handleClick }: MenuBarProps) => {
 };
 
 type SideBarTabButtonsProps = {
-  switchTab: (index: number) => void;
+  switchTab: (_index: 0 | 1) => void;
   activeTab: number;
 };
 

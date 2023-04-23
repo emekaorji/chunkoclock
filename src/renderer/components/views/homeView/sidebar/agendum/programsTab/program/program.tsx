@@ -18,15 +18,9 @@ import ThemeInput, {
 import getClassName from 'renderer/functions/getClassName';
 import getFormattedDate from 'renderer/functions/getFormattedDate';
 import styles from './program.module.css';
+import { TInputRef } from '../../types/programTypes';
+import useAgendumContext from '../../hooks/useAgendumContext';
 
-interface IProgram {
-  readonly id: string;
-  title: string;
-  placeholder: string;
-  date: string;
-  theme: Theme;
-}
-type TInputRef = { select: () => void };
 type ProgramProps = {
   isLast: boolean;
   id: string;
@@ -34,24 +28,11 @@ type ProgramProps = {
   date: string;
   theme: Theme;
   placeholder: string;
-  deleteProgram: (id: string) => void;
-  updateProgram: (
-    id: string,
-    newProgram: (program: IProgram) => IProgram
-  ) => void;
+  description: string;
 };
 const Program = forwardRef(
   (
-    {
-      isLast,
-      id,
-      title,
-      date,
-      theme,
-      placeholder,
-      deleteProgram,
-      updateProgram,
-    }: ProgramProps,
+    { isLast, id, title, date, theme, placeholder, description }: ProgramProps,
     ref: ForwardedRef<TInputRef>
   ) => {
     const [programTitle, setProgramTitle] = useState(title);
@@ -62,6 +43,9 @@ const Program = forwardRef(
     const containerRef = useRef<HTMLDivElement>(null);
     const inputRef = useRef<HTMLInputElement>(null);
 
+    const { handleDeleteProgram, handleSelectProgram, handleUpdateProgram } =
+      useAgendumContext();
+
     const isEditing = useMemo(
       () => isEditingState || isLast,
       [isEditingState, isLast]
@@ -71,7 +55,6 @@ const Program = forwardRef(
       ref,
       () => ({
         select() {
-          console.log(inputRef);
           if (isEditing) {
             inputRef.current?.select();
           }
@@ -92,7 +75,7 @@ const Program = forwardRef(
     const handleEdit = () => setIsEditing(true);
     const handleSave = () => {
       if (!isEditing) return;
-      updateProgram(id, (program) => ({
+      handleUpdateProgram(id, (program) => ({
         ...program,
         title: programTitle,
         theme: programTheme,
@@ -102,11 +85,10 @@ const Program = forwardRef(
     };
     const handleDelete = () => {
       setIsDeleting(true);
-      setTimeout(() => deleteProgram(id), 200);
+      setTimeout(() => handleDeleteProgram(id), 200);
     };
     const handleClick = () => {
-      // eslint-disable-next-line no-console
-      console.log('clicked', id);
+      handleSelectProgram(id);
     };
 
     useOnClickOutside(containerRef, handleSave);
@@ -187,7 +169,6 @@ const Program = forwardRef(
   }
 );
 
-export { IProgram, TInputRef };
 export default memo(Program);
 
 /**
@@ -198,4 +179,6 @@ export default memo(Program);
  * Clickable
  * Edit button
  * Delete button
+ * Number of slots
+ * Short description of the program
  */
