@@ -26,6 +26,8 @@ const getTimeSlots = (num: number) => {
   return arr;
 };
 
+const TIME_SLOTS = getTimeSlots(1);
+
 const TimeSlotsTab = () => {
   const { timeSlotsTabRef, timeSlotTitleRef, selectedProgram, isLastTimeSlot } =
     useAgendumContext();
@@ -34,12 +36,11 @@ const TimeSlotsTab = () => {
     <>
       <div
         className={
-          styles.timeSlotsTab +
-          getClassName(!!selectedProgram, styles.programSelected)
+          styles.tab + getClassName(!!selectedProgram, styles.programSelected)
         }
       >
-        <div className={styles.programsContainer} ref={timeSlotsTabRef}>
-          {getTimeSlots(15).map((item, index, array) => (
+        <div className={styles.timeSlotsContainer} ref={timeSlotsTabRef}>
+          {TIME_SLOTS.map((item, index, array) => (
             <TimeSlot
               key={item.id}
               id={item.id}

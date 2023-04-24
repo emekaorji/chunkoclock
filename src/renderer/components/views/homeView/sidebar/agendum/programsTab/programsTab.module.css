@@ -12,10 +12,10 @@
   padding-bottom: 7em;
   scroll-behavior: smooth;
 }
-.anchor {
+/* .anchor {
   overflow-anchor: auto;
   height: 1px;
-}
+} */
 .addButton {
   font-size: 0.85em;
   position: absolute;

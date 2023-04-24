@@ -1,0 +1,147 @@
+.timeSlot {
+  background-color: #88888855;
+  opacity: 1;
+  color: #DDDDDD;
+  display: flex;
+  gap: 0.5em;
+  flex-direction: column;
+  position: relative;
+  padding: 0.3em;
+  border-radius: 0.5em;
+  transition: opacity 100ms ease;
+}
+.timeSlot.isDeleting {
+  opacity: 0;
+  overflow: hidden;
+  animation: close 200ms ease forwards;
+}
+@keyframes close {
+  0% {
+    min-height: 4em;
+    padding-top: 0.3em;
+    padding-bottom: 0.3em;
+  }
+  10% {
+    min-height: 3.6em;
+    padding-top: 0.27em;
+    padding-bottom: 0.27em;
+  }
+  20% {
+    min-height: 3.2em;
+    padding-top: 0.24em;
+    padding-bottom: 0.24em;
+  }
+  30% {
+    min-height: 2.8em;
+    padding-top: 0.21em;
+    padding-bottom: 0.21em;
+  }
+  40% {
+    min-height: 2.4em;
+    padding-top: 0.18em;
+    padding-bottom: 0.18em;
+  }
+  50% {
+    min-height: 2em;
+    padding-top: 0.15em;
+    padding-bottom: 0.15em;
+  }
+  60% {
+    min-height: 1.6em;
+    padding-top: 0.12em;
+    padding-bottom: 0.12em;
+  }
+  70% {
+    min-height: 1.2em;
+    padding-top: 0.9em;
+    padding-bottom: 0.9em;
+  }
+  80% {
+    min-height: 0.8em;
+    padding-top: 0.6em;
+    padding-bottom: 0.6em;
+  }
+  90% {
+    min-height: 0.4em;
+    padding-top: 0.3em;
+    padding-bottom: 0.3em;
+  }
+  100% {
+    min-height: 0em;
+    padding-top: 0em;
+    padding-bottom: 0em;
+  }
+}
+.inputContainer {
+  display: flex;
+  gap: 0.3em;
+  align-items: center;
+}
+.input, .title {
+  max-width: 80%;
+  font-size: 1.6em;
+  font-weight: 600;
+}
+.title {
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+}
+.secondaryInput {
+  display: flex;
+  justify-content: space-between;
+}
+.time {
+  font-style: italic;
+  color: #FFFFFF88;
+}
+.hiddenButtons {
+  opacity: 0;
+  display: flex;
+  gap: 0;
+  position: absolute;
+  top: 0.5em;
+  right: 0.5em;
+}
+.timeSlot:hover .hiddenButtons {
+  opacity: 1;
+  gap: 0.4em;
+}
+.hiddenButtons button {
+  width: 1.1em;
+  height: 1.1em;
+  filter: brightness(70%);
+  color: #FFFFFFAA;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.hiddenButtons button:hover {
+  filter: brightness(100%);
+  transform: scale(1.05);
+}
+.hiddenButtons .deleteButton {
+  width: 0;
+  color: #FF4545AA;
+  transition: width 250ms ease;
+}
+.timeSlot:hover .deleteButton {
+  width: 1.1em;
+}
+.saveButton {
+  background-color: #e0c022;
+  color: #000000;
+  position: absolute;
+  top: 0.5em;
+  right: 0.5em;
+  padding: 0.1em 0.3em;
+  border-radius: 0.3em;
+}
+.clickableOverlay {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  border-radius: 0.5em;
+}

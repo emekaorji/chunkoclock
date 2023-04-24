@@ -15,20 +15,21 @@ const AgendumContext = createContext<AgendumContextInterface | null>(null);
 const AgendumProvider = ({ children }: AgendumProviderProps) => {
   const [newProgramExist, setNewProgramExist] = useState(false);
   const [newTimeSlotExist, setNewTimeSlotExist] = useState(false);
+
   const [activeProgram, setActiveProgram] = useState<IProgram | null>(null);
   const [selectedProgram, setSelectedProgram] = useState<IProgram | null>(null);
+
   const [programs, setPrograms] = useStore<IProgram[]>('programs', []);
+  const [timeSlots, setTimeSlots] = useStore<ITimeSlot[]>(
+    `timeSlots_${selectedProgram?.id}`,
+    []
+  );
+
   const programsTabRef = useRef<HTMLDivElement>(null);
   const programTitleRef = useRef<TInputRef>(null);
+
   const timeSlotsTabRef = useRef<HTMLDivElement>(null);
   const timeSlotTitleRef = useRef<TInputRef>(null);
-
-  const isLastProgram = useCallback(
-    (index: number, array: IProgram[]) => {
-      return index + 1 === array.length && newProgramExist;
-    },
-    [newProgramExist]
-  );
 
   const isLastTimeSlot = useCallback(
     (index: number, array: ITimeSlot[]) => {
@@ -36,7 +37,60 @@ const AgendumProvider = ({ children }: AgendumProviderProps) => {
     },
     [newTimeSlotExist]
   );
+  const handleAddTimeSlot = useCallback(() => {
+    const scrollContainer = timeSlotsTabRef.current as HTMLDivElement;
+    const { scrollHeight } = scrollContainer;
+    const randomTitle = getRandomTitle();
+    const newTimeSlot: ITimeSlot = {
+      id: uuidv4(),
+      title: randomTitle,
+      placeholder: randomTitle,
+      description: '',
+      speaker: 'Emeka Orji',
+      start: '',
+      end: '',
+    };
+    setTimeSlots((prev) => {
+      prev.push(newTimeSlot);
+      return [...prev];
+    });
+    setNewTimeSlotExist(true);
+    setTimeout(() => {
+      scrollContainer.scrollTo({
+        left: 0,
+        top: scrollHeight,
+        behavior: 'smooth',
+      });
+      timeSlotTitleRef.current?.select();
+    }, 1);
+  }, [setTimeSlots]);
+  const handleDeleteTimeSlot = useCallback(
+    (id: string) => {
+      setTimeSlots((prev) => prev.filter((timeSlot) => timeSlot.id !== id));
+    },
+    [setTimeSlots]
+  );
+  const handleUpdateTimeSlot = useCallback(
+    (id: string, newTimeSlot: (_timeSlot: ITimeSlot) => ITimeSlot) => {
+      setTimeSlots((prev) => {
+        const timeSlotIndex = prev.findIndex((item) => item.id === id);
+        const timeSlot = prev.find((item) => item.id === id);
+        if (!timeSlot) return prev;
+        const updatedTimeSlot = newTimeSlot(timeSlot);
+        prev.splice(timeSlotIndex, 1, updatedTimeSlot);
+        return [...prev];
+      });
+      setNewTimeSlotExist(false);
+    },
+    [setTimeSlots]
+  );
 
+  const isLastProgram = useCallback(
+    (index: number, array: IProgram[]) => {
+      return index + 1 === array.length && newProgramExist;
+    },
+    [newProgramExist]
+  );
   const handleAddProgram = useCallback(() => {
     const scrollContainer = programsTabRef.current as HTMLDivElement;
     const { scrollHeight } = scrollContainer;
@@ -64,14 +118,12 @@ const AgendumProvider = ({ children }: AgendumProviderProps) => {
       programTitleRef.current?.select();
     }, 1);
   }, [setPrograms]);
-
   const handleDeleteProgram = useCallback(
     (id: string) => {
       setPrograms((prev) => prev.filter((program) => program.id !== id));
     },
     [setPrograms]
   );
-
   const handleUpdateProgram = useCallback(
     (id: string, newProgram: (_program: IProgram) => IProgram) => {
       setPrograms((prev) => {
@@ -86,7 +138,6 @@ const AgendumProvider = ({ children }: AgendumProviderProps) => {
     },
     [setPrograms]
   );
-
   const handleSelectProgram = useCallback(
     (id: string) => {
       const clickedProgram = programs.find((program) => program.id === id);
@@ -95,7 +146,6 @@ const AgendumProvider = ({ children }: AgendumProviderProps) => {
     },
     [programs]
   );
-
   const handleActivateProgram = useCallback(
     (id: string) => {
       const runningProgram = programs.find((program) => program.id === id);
@@ -112,13 +162,17 @@ const AgendumProvider = ({ children }: AgendumProviderProps) => {
       programsTabRef,
       programs,
       programTitleRef,
+      timeSlots,
       timeSlotsTabRef,
       timeSlotTitleRef,
       handleActivateProgram,
       handleAddProgram,
+      handleAddTimeSlot,
       handleDeleteProgram,
+      handleDeleteTimeSlot,
       handleSelectProgram,
       handleUpdateProgram,
+      handleUpdateTimeSlot,
       isLastProgram,
       isLastTimeSlot,
     }),
@@ -126,11 +180,15 @@ const AgendumProvider = ({ children }: AgendumProviderProps) => {
       activeProgram,
       selectedProgram,
       programs,
+      timeSlots,
       handleActivateProgram,
       handleAddProgram,
+      handleAddTimeSlot,
       handleDeleteProgram,
+      handleDeleteTimeSlot,
       handleSelectProgram,
       handleUpdateProgram,
+      handleUpdateTimeSlot,
       isLastProgram,
       isLastTimeSlot,
     ]

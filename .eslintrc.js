@@ -9,6 +9,7 @@ module.exports = {
     'import/no-unresolved': 'off',
     'jsx-a11y/control-has-associated-label': 'off',
     'no-unused-vars': ['warn', { argsIgnorePattern: '^_' }],
+    'no-nested-ternary': 'off',
     'react/function-component-definition': [
       2,
       { namedComponents: 'arrow-function' },

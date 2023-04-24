@@ -7,6 +7,8 @@ import {
   useState,
 } from 'react';
 import useOnClickOutside from 'renderer/hooks/view/useOnClickOutside';
+import getFormattedTime from 'renderer/functions/getFormattedTime';
+import getClassName from 'renderer/functions/getClassName';
 import styles from './timeSlot.module.css';
 import useAgendumContext from '../../hooks/useAgendumContext';
 
@@ -33,8 +35,7 @@ const TimeSlot = forwardRef(
     const containerRef = useRef<HTMLDivElement>(null);
     const inputRef = useRef<HTMLInputElement>(null);
 
-    const { handleDeleteProgram, handleSelectProgram, handleUpdateProgram } =
-      useAgendumContext();
+    const { handleDeleteTimeSlot, handleUpdateTimeSlot } = useAgendumContext();
 
     const isEditing = useMemo(
       () => isEditingState || isLast,
@@ -56,10 +57,16 @@ const TimeSlot = forwardRef(
     const handleInputChange = (event: ChangeEvent<HTMLInputElement>) => {
       setTimeSlotTitle(event.target.value);
     };
+    const handleStartChange = (event: ChangeEvent<HTMLInputElement>) => {
+      setTimeSlotStart(event.target.value);
+    };
+    const handleEndChange = (event: ChangeEvent<HTMLInputElement>) => {
+      setTimeSlotEnd(event.target.value);
+    };
     const handleEdit = () => setIsEditing(true);
     const handleSave = () => {
       if (!isEditing) return;
-      handleUpdateProgram(id, (program) => ({
+      handleUpdateTimeSlot(id, (program) => ({
         ...program,
         title: timeSlotTitle,
       }));
@@ -67,17 +74,21 @@ const TimeSlot = forwardRef(
     };
     const handleDelete = () => {
       setIsDeleting(true);
-      setTimeout(() => handleDeleteProgram(id), 200);
+      setTimeout(() => handleDeleteTimeSlot(id), 200);
     };
     const handleClick = () => {
-      handleSelectProgram(id);
+      //
     };
 
     useOnClickOutside(containerRef, handleSave);
 
     return (
       <>
-        <div>
+        <div
+          className={
+            styles.timeSlot + getClassName(isDeleting, styles.isDeleting)
+          }
+        >
           <div className={styles.inputContainer}>
             {isEditing ? (
               <input
@@ -93,7 +104,25 @@ const TimeSlot = forwardRef(
               <div className={styles.title}>{timeSlotTitle}</div>
             )}
           </div>
-          <div className="title">{}</div>
+          {isEditing ? (
+            <div className={styles.secondaryInput}>
+              <input
+                type="time"
+                value={timeSlotStart}
+                onChange={handleStartChange}
+              />
+              <input
+                type="time"
+                value={timeSlotEnd}
+                onChange={handleEndChange}
+              />
+            </div>
+          ) : (
+            <div className={styles.time}>
+              {getFormattedTime('09:44 am', 'quartile')} -{' '}
+              {getFormattedTime(timeSlotEnd, 'hh:mm P')}
+            </div>
+          )}
         </div>
       </>
     );
