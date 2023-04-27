@@ -12,7 +12,7 @@ import getValueFromTime from 'renderer/functions/getValueFromTime';
 import isValidTime from 'renderer/functions/isValidTime';
 import useStore from 'renderer/hooks/data/useStore';
 import { ChangeEventProp } from 'renderer/types/eventTypes';
-import { StoreStateType, TimeSlot } from 'renderer/types/storeTypes';
+import { StoreStateType } from 'renderer/types/storeTypes';
 import { HomeViewContextInterface } from '../types/contextType';
 
 type HomeViewProviderProps = {
@@ -28,23 +28,12 @@ const HomeViewProvider = ({ children }: HomeViewProviderProps) => {
     timeInSeconds: DEFAULT_TIME_IN_SECONDS,
     time: null,
   });
-  const [agendum, setAgendum] = useStore<TimeSlot[]>('agendum', []);
   const [value, setValue] = useState(getValueFromTime(DEFAULT_TIME_IN_SECONDS));
   const [isPlaying, setIsPlaying] = useState(false);
   const [timeUp, setTimeUp] = useState(false);
   const intervalId = useRef<number | undefined>(undefined);
   const [isFocused, setIsFocused] = useState(false);
   const [menuIsOpen, setMenuIsOpen] = useState(false);
-
-  const updateAgendum = useCallback(
-    (newTimeSlot: TimeSlot) => {
-      setAgendum((prev) => {
-        prev.push(newTimeSlot);
-        return [...prev];
-      });
-    },
-    [setAgendum]
-  );
 
   const timeUpAck = useMemo(() => {
     return storeTime.time === null;
@@ -135,9 +124,8 @@ const HomeViewProvider = ({ children }: HomeViewProviderProps) => {
 
   const toggleSidebar = useCallback(() => setMenuIsOpen((prev) => !prev), []);
 
-  const providerValue = useMemo(
+  const providerValue = useMemo<HomeViewContextInterface>(
     () => ({
-      agendum,
       isFocused,
       isPaused,
       isPlaying,
@@ -153,10 +141,8 @@ const HomeViewProvider = ({ children }: HomeViewProviderProps) => {
       handleSecondsChange,
       handleStart,
       toggleSidebar,
-      updateAgendum,
     }),
     [
-      agendum,
       isFocused,
       isPaused,
       isPlaying,
@@ -172,7 +158,6 @@ const HomeViewProvider = ({ children }: HomeViewProviderProps) => {
       handleSecondsChange,
       handleStart,
       toggleSidebar,
-      updateAgendum,
     ]
   );
 

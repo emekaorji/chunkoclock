@@ -9,6 +9,8 @@ import {
 import useOnClickOutside from 'renderer/hooks/view/useOnClickOutside';
 import getFormattedTime from 'renderer/functions/getFormattedTime';
 import getClassName from 'renderer/functions/getClassName';
+import PenIcon from 'renderer/components/interface/icons/pen';
+import TrashIcon from 'renderer/components/interface/icons/trash';
 import styles from './timeSlot.module.css';
 import useAgendumContext from '../../hooks/useAgendumContext';
 
@@ -28,8 +30,8 @@ const TimeSlot = forwardRef(
     ref
   ) => {
     const [timeSlotTitle, setTimeSlotTitle] = useState(title);
-    const [timeSlotStart, setTimeSlotStart] = useState('09:00 AM');
-    const [timeSlotEnd, setTimeSlotEnd] = useState('10:00 AM');
+    const [timeSlotStart, setTimeSlotStart] = useState('11:00');
+    const [timeSlotEnd, setTimeSlotEnd] = useState('13:00');
     const [isEditingState, setIsEditing] = useState(false);
     const [isDeleting, setIsDeleting] = useState(false);
     const containerRef = useRef<HTMLDivElement>(null);
@@ -119,9 +121,42 @@ const TimeSlot = forwardRef(
             </div>
           ) : (
             <div className={styles.time}>
-              {getFormattedTime('09:44 am', 'quartile')} -{' '}
+              {getFormattedTime(timeSlotStart, 'hh:mm P')} -{' '}
               {getFormattedTime(timeSlotEnd, 'hh:mm P')}
             </div>
+          )}
+          {!isEditing && (
+            <button
+              type="button"
+              className={styles.clickableOverlay}
+              onClick={handleClick}
+            />
+          )}
+          {!isEditing ? (
+            <div className={styles.hiddenButtons}>
+              <button
+                type="button"
+                className={styles.editButton}
+                onClick={handleEdit}
+              >
+                <PenIcon />
+              </button>
+              <button
+                type="button"
+                className={styles.deleteButton}
+                onClick={handleDelete}
+              >
+                <TrashIcon />
+              </button>
+            </div>
+          ) : (
+            <button
+              type="button"
+              className={styles.saveButton}
+              onClick={handleSave}
+            >
+              Save
+            </button>
           )}
         </div>
       </>

@@ -1,5 +1,4 @@
 import { ChangeEventProp } from 'renderer/types/eventTypes';
-import { TimeSlot } from 'renderer/types/storeTypes';
 import { TimeValueType } from 'renderer/types/timeTypes';
 
 export interface HomeViewContextInterface {
@@ -11,12 +10,11 @@ export interface HomeViewContextInterface {
   timeUpAck: boolean;
   value: TimeValueType;
   handleFocus: () => void;
-  handleHoursChange: (event: ChangeEventProp) => void;
-  handleMinutesChange: (event: ChangeEventProp) => void;
+  handleHoursChange: (_event: ChangeEventProp) => void;
+  handleMinutesChange: (_event: ChangeEventProp) => void;
   handlePause: () => void;
   handleRestart: () => void;
-  handleSecondsChange: (event: ChangeEventProp) => void;
+  handleSecondsChange: (_event: ChangeEventProp) => void;
   handleStart: () => void;
   toggleSidebar: () => void;
-  updateAgendum: (timeSlot: TimeSlot) => void;
 }

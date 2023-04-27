@@ -4,6 +4,8 @@ import PlusIcon from 'renderer/components/interface/icons/plus';
 import getClassName from 'renderer/functions/getClassName';
 import getRandomTitle from 'renderer/functions/getRandomWord';
 import { v4 as uuidv4 } from 'uuid';
+import CancelIcon from 'renderer/components/interface/icons/cancel';
+import ThemeInput from 'renderer/components/interface/themeInput/themeInput';
 import styles from './timeSlotsTab.module.css';
 import useAgendumContext from '../hooks/useAgendumContext';
 import TimeSlot from './timeSlot/timeSlot';
@@ -29,8 +31,14 @@ const getTimeSlots = (num: number) => {
 const TIME_SLOTS = getTimeSlots(1);
 
 const TimeSlotsTab = () => {
-  const { timeSlotsTabRef, timeSlotTitleRef, selectedProgram, isLastTimeSlot } =
-    useAgendumContext();
+  const {
+    timeSlots,
+    timeSlotsTabRef,
+    timeSlotTitleRef,
+    selectedProgram,
+    isLastTimeSlot,
+    handleAddTimeSlot,
+  } = useAgendumContext();
 
   return (
     <>
@@ -39,8 +47,26 @@ const TimeSlotsTab = () => {
           styles.tab + getClassName(!!selectedProgram, styles.programSelected)
         }
       >
+        <div className={styles.infoContainer}>
+          <div className={styles.info}>
+            <div className={styles.title}>
+              <button
+                type="button"
+                className={styles.cancelButton}
+                onClick={() => {}}
+              >
+                <CancelIcon />
+              </button>
+              <div className={styles.titleText}>{selectedProgram?.title}</div>
+            </div>
+            <div className={styles.description}>
+              {selectedProgram?.description}
+            </div>
+          </div>
+          <ThemeInput value={selectedProgram?.theme || 'monotone'} disabled />
+        </div>
         <div className={styles.timeSlotsContainer} ref={timeSlotsTabRef}>
-          {TIME_SLOTS.map((item, index, array) => (
+          {timeSlots.map((item, index, array) => (
             <TimeSlot
               key={item.id}
               id={item.id}
@@ -53,9 +79,8 @@ const TimeSlotsTab = () => {
               ref={timeSlotTitleRef}
             />
           ))}
-          {/* <div className={styles.anchor} /> */}
         </div>
-        <SmallButton type="button" className={styles.addButton}>
+        <SmallButton className={styles.addButton} onClick={handleAddTimeSlot}>
           <PlusIcon />
         </SmallButton>
       </div>

@@ -1,17 +1,24 @@
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 
 const useStore = <T>(
   key: string,
   defaultState: T | null = null
 ): [T, React.Dispatch<React.SetStateAction<T>>] => {
-  const value: T = useMemo(() => {
-    return window.electron.store.get(key) ?? defaultState;
-  }, [defaultState, key]);
-
-  const [state, setState] = useState<T>(value);
+  const [state, setState] = useState<T>(
+    window.electron.store.get(key) ?? defaultState
+  );
+  const currentKey = useRef(key);
 
   useEffect(() => {
-    window.electron.store.set(key, state);
+    let value: T;
+    if (currentKey.current !== key) {
+      value = window.electron.store.get(key);
+      currentKey.current = key;
+      setState(value);
+    } else {
+      value = state;
+    }
+    window.electron.store.set(key, value);
   }, [key, state]);
 
   return [state, setState];

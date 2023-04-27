@@ -188,7 +188,7 @@ const convertPeriod = (inputTime: string): string => {
   const spacedPeriodTest = /((\s?(A|P)M)|(\s?(a|p)m))$/g;
 
   if (clockPeriodTest.test(time)) {
-    const periodMatch = time.match(periodTest)![0].toLowerCase();
+    const periodMatch = (time.match(periodTest)! || [])[0]?.toLowerCase();
     time = time.replace(spacedPeriodTest, '');
     let [h, m, s = '00'] = time.split(':');
     h = periodMatch === 'pm' ? (Number(h) + 12).padZero() : h;
