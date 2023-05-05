@@ -17,6 +17,9 @@ import ThemeInput, {
 } from 'renderer/components/interface/themeInput/themeInput';
 import getClassName from 'renderer/functions/getClassName';
 import getFormattedDate from 'renderer/functions/getFormattedDate';
+import Textarea, {
+  TextChangeEvent,
+} from 'renderer/components/interface/textarea/textarea';
 import styles from './program.module.css';
 import { TInputRef } from '../../types/programTypes';
 import useAgendumContext from '../../hooks/useAgendumContext';
@@ -38,6 +41,7 @@ const Program = forwardRef(
     const [programTitle, setProgramTitle] = useState(title);
     const [programTheme, setProgramTheme] = useState(theme);
     const [programDate, setProgramDate] = useState(date);
+    const [programDescription, setProgramDescription] = useState(description);
     const [isEditingState, setIsEditing] = useState(false);
     const [isDeleting, setIsDeleting] = useState(false);
     const containerRef = useRef<HTMLDivElement>(null);
@@ -72,7 +76,16 @@ const Program = forwardRef(
     const handleThemeChange = (event: ThemeEvent) => {
       setProgramTheme(event.target.value);
     };
-    const handleEdit = () => setIsEditing(true);
+    const handleDescriptionChange = (event: TextChangeEvent) => {
+      setProgramDescription(event.target.value);
+    };
+    const handleEdit = () => {
+      setProgramTitle(title);
+      setProgramTheme(theme);
+      setProgramDate(date);
+      setProgramDescription(description);
+      setIsEditing(true);
+    };
     const handleSave = () => {
       if (!isEditing) return;
       handleUpdateProgram(id, (program) => ({
@@ -103,17 +116,31 @@ const Program = forwardRef(
         >
           <div className={styles.inputContainer}>
             {isEditing ? (
-              <input
-                type="text"
-                placeholder={placeholder}
-                className={styles.input}
-                value={programTitle}
-                onChange={handleInputChange}
-                disabled={!isEditing}
-                ref={inputRef}
-              />
+              <>
+                <input
+                  type="text"
+                  placeholder={placeholder}
+                  className={styles.titleInput}
+                  value={programTitle}
+                  onChange={handleInputChange}
+                  disabled={!isEditing}
+                  ref={inputRef}
+                />
+                <Textarea
+                  className={styles.descriptionInput}
+                  value={programDescription}
+                  onChange={handleDescriptionChange}
+                  placeholder="Write a lil something here"
+                  disabled={!isEditing}
+                />
+              </>
             ) : (
-              <div className={styles.title}>{programTitle}</div>
+              <>
+                <div className={styles.title}>{title}</div>
+                {description && (
+                  <div className={styles.description}>{description}</div>
+                )}
+              </>
             )}
           </div>
           {isEditing ? (
@@ -127,7 +154,7 @@ const Program = forwardRef(
             </div>
           ) : (
             <div className={styles.date}>
-              {getFormattedDate(programDate, 'Dth Mmmm, YYYY')}
+              {getFormattedDate(date, 'Dth Mmmm, YYYY')}
             </div>
           )}
           {!isEditing && (

@@ -154,6 +154,9 @@ const AgendumProvider = ({ children }: AgendumProviderProps) => {
     },
     [programs]
   );
+  const handleCloseProgram = useCallback(() => {
+    setSelectedProgram(null);
+  }, []);
 
   const providerValue = useMemo<AgendumContextInterface>(
     () => ({
@@ -168,6 +171,7 @@ const AgendumProvider = ({ children }: AgendumProviderProps) => {
       handleActivateProgram,
       handleAddProgram,
       handleAddTimeSlot,
+      handleCloseProgram,
       handleDeleteProgram,
       handleDeleteTimeSlot,
       handleSelectProgram,
@@ -184,6 +188,7 @@ const AgendumProvider = ({ children }: AgendumProviderProps) => {
       handleActivateProgram,
       handleAddProgram,
       handleAddTimeSlot,
+      handleCloseProgram,
       handleDeleteProgram,
       handleDeleteTimeSlot,
       handleSelectProgram,

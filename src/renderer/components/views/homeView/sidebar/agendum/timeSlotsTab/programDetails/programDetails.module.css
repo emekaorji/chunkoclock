@@ -1,0 +1,119 @@
+.programDetailsContainer {
+  padding-inline: 0.3em;
+}
+.programDetails {
+  background-color: #202124;
+  box-shadow: 0 0.27em 0.5em 0.3em #00000044;
+  display: flex;
+  flex-direction: column;
+  gap: 0.3em;
+  position: relative;
+  padding: 0.3em;
+  border-radius: 0.3em;
+  z-index: 1;
+}
+.buttons {
+  height: 1.8em;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.actionButtons {
+  width: 100%;
+  opacity: 1;
+  display: flex;
+  gap: 0.4em;
+  justify-content: space-between;
+  align-items: center;
+}
+.actionButtons button {
+  width: 1.1em;
+  height: 1.1em;
+  filter: brightness(70%);
+  color: #ffffffaa;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1;
+}
+.actionButtons .cancelButton {
+  width: 1.7em;
+  height: 1.7em;
+  background-color: #ffffff33;
+  color: #ff4545aa;
+  margin-right: auto;
+  padding: 0.14em;
+  border-radius: 0.3em;
+}
+.actionButtons button:hover {
+  filter: brightness(100%);
+  transform: scale(1.05);
+}
+.actionButtons .deleteButton {
+  width: 1.1em;
+  color: #ff4545aa;
+  transition: width 250ms ease;
+}
+.saveButton {
+  background-color: #e0c022;
+  color: #000000;
+  padding: 0.1em 0.3em;
+  border-radius: 0.3em;
+  z-index: 1;
+}
+.info {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2em;
+}
+.title {
+  display: flex;
+  align-items: center;
+}
+.titleInput,
+.titleText {
+  max-width: 80%;
+  font-size: 1.8em;
+  font-weight: 600;
+}
+.expanded .titleText {
+  z-index: 1;
+}
+.themeInput {
+  margin-left: auto;
+}
+.descriptionText,
+.descriptionInput {
+  font-size: 0.9em;
+}
+.descriptionText {
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+.expanded .descriptionText {
+  display: inline;
+  z-index: 1;
+}
+.dateInput,
+.dateText {
+  font-size: 0.9em;
+  margin-top: 0.3em;
+}
+.dateInput {
+  width: fit-content;
+}
+.dateText {
+  font-style: italic;
+  color: #ffffff88;
+}
+.clickableOverlay {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  border-radius: 0.5em;
+}

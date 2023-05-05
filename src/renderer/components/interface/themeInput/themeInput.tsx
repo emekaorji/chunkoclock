@@ -11,6 +11,24 @@ type Theme =
   | 'talldwarf'
   | 'envoys'
   | 'vsaandpoe';
+type ThemeName =
+  | 'Monotone'
+  | 'Brain Sprain'
+  | 'Liquid Stone'
+  | 'Curly Stick'
+  | 'Tall Dwarf'
+  | 'Envoys'
+  | 'VSA and POE';
+type ThemeToName = Record<Theme, ThemeName>;
+const themeToName: ThemeToName = {
+  monotone: 'Monotone',
+  brainsprain: 'Brain Sprain',
+  liquidstone: 'Liquid Stone',
+  curlystick: 'Curly Stick',
+  talldwarf: 'Tall Dwarf',
+  envoys: 'Envoys',
+  vsaandpoe: 'VSA and POE',
+};
 interface ThemeEvent {
   target: {
     name: string;
@@ -36,6 +54,7 @@ type DisabledThemeInputProps = {
 type ThemeInputProps = (EnabledThemeInputProps | DisabledThemeInputProps) & {
   name?: string;
   value: Theme;
+  className?: string;
 };
 
 const Color = ({
@@ -60,6 +79,7 @@ const Color = ({
         )}${getClassName(isSelected, styles.isSelected)}`}
         onClick={handleClick}
         disabled={disabled}
+        title={themeToName[value]}
       >
         <div className={styles.primary} />
         <div className={styles.secondary} />
@@ -72,6 +92,7 @@ const ThemeInput = ({
   value,
   onChange,
   disabled = false,
+  className,
 }: ThemeInputProps) => {
   const [isOpen, setIsOpen] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
@@ -95,11 +116,15 @@ const ThemeInput = ({
 
   return (
     <>
-      <div className={styles.themeContainer} ref={containerRef}>
+      <div
+        className={styles.themeContainer + getClassName(className)}
+        ref={containerRef}
+      >
         <Color
           value={value}
           className={styles.placeholder}
           handleChange={toggleThemes}
+          disabled={disabled}
         />
         {!disabled && (
           <div className={styles.themes + getClassName(isOpen, styles.isOpen)}>

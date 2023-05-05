@@ -1,12 +1,16 @@
 .colorDiscs {
-  background-color: #FFFFFF44;
+  background-color: #ffffff44;
   display: flex;
   padding: 0.2em;
   border-radius: 0.4em;
 }
-.colorDiscs:hover,
+.colorDiscs:disabled {
+  cursor: default;
+  pointer-events: none;
+}
+.colorDiscs:not(:disabled):hover,
 .colorDiscs.isSelected {
-  background-color: #FFFFFF88;
+  background-color: #ffffff88;
 }
 .colorDiscs div {
   width: 1em;
@@ -22,43 +26,43 @@
   background-color: #000000;
 }
 .monotone .secondary {
-  background-color: #FFFFFF;
+  background-color: #ffffff;
 }
 .brainsprain .primary {
-  background-color: #E0C022;
+  background-color: #e0c022;
 }
 .brainsprain .secondary {
   background-color: #000000;
 }
 .liquidstone .primary {
-  background-color: #020E12;
+  background-color: #020e12;
 }
 .liquidstone .secondary {
-  background-color: #98AD06;
+  background-color: #98ad06;
 }
 .curlystick .primary {
   background-color: #040518;
 }
 .curlystick .secondary {
-  background-color: #E89B19;
+  background-color: #e89b19;
 }
 .talldwarf .primary {
-  background-color: #B9BAC5;
+  background-color: #b9bac5;
 }
 .talldwarf .secondary {
-  background-color: #4440B3;
+  background-color: #4440b3;
 }
 .envoys .primary {
-  background-color: #B9BAC5;
+  background-color: #b9bac5;
 }
 .envoys .secondary {
   background-color: #008000;
 }
 .vsaandpoe .primary {
-  background-color: #4DA8D5;
+  background-color: #4da8d5;
 }
 .vsaandpoe .secondary {
-  background-color: #04053E;
+  background-color: #04053e;
 }
 
 .themeContainer {
@@ -66,7 +70,7 @@
 }
 .themes {
   width: 7em;
-  background-color: #FFFFFF44;
+  background-color: #ffffff44;
   backdrop-filter: blur(6px);
   opacity: 0;
   display: flex;
@@ -78,7 +82,7 @@
   right: 0;
   padding: 0.3em;
   border-radius: 0.4em;
-  z-index: 1;
+  z-index: 10;
   pointer-events: none;
 }
 .themes.isOpen {

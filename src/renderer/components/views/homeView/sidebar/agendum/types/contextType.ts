@@ -14,6 +14,7 @@ export interface AgendumContextInterface {
   handleActivateProgram: (_id: string) => void;
   handleAddProgram: () => void;
   handleAddTimeSlot: () => void;
+  handleCloseProgram: () => void;
   handleDeleteProgram: (_id: string) => void;
   handleDeleteTimeSlot: (_id: string) => void;
   handleSelectProgram: (_id: string) => void;

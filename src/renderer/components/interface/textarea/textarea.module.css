@@ -1,0 +1,15 @@
+.textarea {
+  width: 100%;
+  min-height: fit-content;
+  max-height: 150px;
+  position: relative;
+  overflow-x: hidden;
+  overflow-y: auto;
+  outline: none;
+}
+.textarea::before {
+  content: attr(placeholder);
+  position: absolute;
+  color: #ffffff99;
+  cursor: text;
+}
