@@ -155,7 +155,10 @@ const ProgramDetails = ({
               value={programTheme || 'monotone'}
               onChange={handleThemeChange}
               disabled={!isEditing}
-              className={styles.themeInput}
+              className={`${styles.themeInput} ${buttonStyle} ${getClassName(
+                isEditing,
+                styles.themeVisible
+              )}`}
             />
           </div>
           {isEditing ? (

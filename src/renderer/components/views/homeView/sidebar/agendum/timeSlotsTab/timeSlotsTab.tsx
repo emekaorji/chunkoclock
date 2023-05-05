@@ -19,9 +19,10 @@ const getTimeSlots = (num: number) => {
       title: randomTitle,
       placeholder: randomTitle,
       description: '',
+      speaker: '',
       start: '',
       end: '',
-      speaker: '',
+      overlap: '',
     });
   }
   return arr;
@@ -66,6 +67,7 @@ const TimeSlotsTab = () => {
               title={item.title}
               placeholder={item.placeholder}
               description={item.description}
+              speaker={item.speaker}
               start={item.start}
               end={item.end}
               isLast={isLastTimeSlot(index, array)}

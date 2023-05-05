@@ -82,6 +82,9 @@
 .themeInput {
   margin-left: auto;
 }
+.themeInput.themeVisible {
+  opacity: 1;
+}
 .descriptionText,
 .descriptionInput {
   font-size: 0.9em;

@@ -13,8 +13,6 @@ const ProgramsTab = () => {
     handleAddProgram,
   } = useAgendumContext();
 
-  console.log(programs);
-
   return (
     <>
       <div className={styles.tab}>

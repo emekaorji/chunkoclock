@@ -10,6 +10,8 @@ type AgendumProviderProps = {
   children: JSX.Element;
 };
 
+const DEFAULT_DURATION = 10; // default duration in minutes
+
 const AgendumContext = createContext<AgendumContextInterface | null>(null);
 
 const AgendumProvider = ({ children }: AgendumProviderProps) => {
@@ -25,6 +27,34 @@ const AgendumProvider = ({ children }: AgendumProviderProps) => {
     []
   );
 
+  const getTimeRange = useCallback(() => {
+    let start: string;
+    let end: string;
+    const lastTimeSlot = timeSlots.at(-1);
+
+    if (lastTimeSlot) {
+      const date = new Date();
+      const overlap = Number(lastTimeSlot.overlap);
+      start = lastTimeSlot.end;
+      const [hours, minutes] = start.split(':');
+      date.setHours(Number(hours), Number(minutes) + overlap);
+      start = date.toLocaleTimeString().substring(0, 5);
+      date.setHours(
+        Number(hours),
+        Number(minutes) + DEFAULT_DURATION + overlap
+      );
+      end = date.toLocaleTimeString().substring(0, 5);
+    } else {
+      const date = new Date();
+      const minutes = date.getMinutes();
+      start = date.toLocaleTimeString().substring(0, 5);
+      date.setMinutes(minutes + DEFAULT_DURATION);
+      end = date.toLocaleTimeString().substring(0, 5);
+    }
+
+    return [start, end];
+  }, [timeSlots]);
+
   const programsTabRef = useRef<HTMLDivElement>(null);
   const programTitleRef = useRef<TInputRef>(null);
 
@@ -38,6 +68,7 @@ const AgendumProvider = ({ children }: AgendumProviderProps) => {
     [newTimeSlotExist]
   );
   const handleAddTimeSlot = useCallback(() => {
+    const [nextStart, nextEnd] = getTimeRange();
     const scrollContainer = timeSlotsTabRef.current as HTMLDivElement;
     const { scrollHeight } = scrollContainer;
     const randomTitle = getRandomTitle();
@@ -47,8 +78,9 @@ const AgendumProvider = ({ children }: AgendumProviderProps) => {
       placeholder: randomTitle,
       description: '',
       speaker: 'Emeka Orji',
-      start: '',
-      end: '',
+      start: nextStart,
+      end: nextEnd,
+      overlap: '2',
     };
     setTimeSlots((prev) => {
       prev.push(newTimeSlot);
@@ -63,7 +95,7 @@ const AgendumProvider = ({ children }: AgendumProviderProps) => {
       });
       timeSlotTitleRef.current?.select();
     }, 1);
-  }, [setTimeSlots]);
+  }, [getTimeRange, setTimeSlots]);
   const handleDeleteTimeSlot = useCallback(
     (id: string) => {
       setTimeSlots((prev) => prev.filter((timeSlot) => timeSlot.id !== id));

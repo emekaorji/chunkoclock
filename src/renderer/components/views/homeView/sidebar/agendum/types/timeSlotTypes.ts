@@ -6,4 +6,5 @@ export interface ITimeSlot {
   speaker: string;
   start: string;
   end: string;
+  overlap: string;
 }

@@ -19,6 +19,7 @@ type TimeSlotProps = {
   title: string;
   placeholder: string;
   description: string;
+  speaker: string;
   start: string;
   end: string;
   isLast: boolean;
@@ -26,12 +27,21 @@ type TimeSlotProps = {
 
 const TimeSlot = forwardRef(
   (
-    { id, title, placeholder, description, start, end, isLast }: TimeSlotProps,
+    {
+      id,
+      title,
+      placeholder,
+      description,
+      speaker,
+      start,
+      end,
+      isLast,
+    }: TimeSlotProps,
     ref
   ) => {
     const [timeSlotTitle, setTimeSlotTitle] = useState(title);
-    const [timeSlotStart, setTimeSlotStart] = useState('11:00');
-    const [timeSlotEnd, setTimeSlotEnd] = useState('13:00');
+    const [timeSlotStart, setTimeSlotStart] = useState(start);
+    const [timeSlotEnd, setTimeSlotEnd] = useState(end);
     const [isEditingState, setIsEditing] = useState(false);
     const [isDeleting, setIsDeleting] = useState(false);
     const containerRef = useRef<HTMLDivElement>(null);
