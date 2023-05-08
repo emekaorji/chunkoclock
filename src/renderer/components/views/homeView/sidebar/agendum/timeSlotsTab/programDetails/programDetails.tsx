@@ -183,7 +183,7 @@ const ProgramDetails = ({
                 {programDescription}
               </div>
               <div className={styles.dateText}>
-                {getFormattedDate(date, 'Dth Mmmm, YYYY')}
+                {getFormattedDate(programDate, 'Dth Mmmm, YYYY')}
               </div>
             </>
           )}

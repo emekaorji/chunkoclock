@@ -7,6 +7,7 @@ import {
   ForwardedRef,
   useMemo,
   memo,
+  useEffect,
 } from 'react';
 import PenIcon from 'renderer/components/interface/icons/pen';
 import useOnClickOutside from 'renderer/hooks/view/useOnClickOutside';
@@ -67,6 +68,19 @@ const Program = forwardRef(
       [isEditing]
     );
 
+    useEffect(() => {
+      setProgramTitle(title);
+    }, [title]);
+    useEffect(() => {
+      setProgramTheme(theme);
+    }, [theme]);
+    useEffect(() => {
+      setProgramDate(date);
+    }, [date]);
+    useEffect(() => {
+      setProgramDescription(description);
+    }, [description]);
+
     const handleInputChange = (event: ChangeEvent<HTMLInputElement>) => {
       setProgramTitle(event.target.value);
     };
@@ -80,10 +94,6 @@ const Program = forwardRef(
       setProgramDescription(event.target.value);
     };
     const handleEdit = () => {
-      setProgramTitle(title);
-      setProgramTheme(theme);
-      setProgramDate(date);
-      setProgramDescription(description);
       setIsEditing(true);
     };
     const handleSave = () => {
@@ -93,6 +103,7 @@ const Program = forwardRef(
         title: programTitle,
         theme: programTheme,
         date: programDate,
+        description: programDescription,
       }));
       setIsEditing(false);
     };
@@ -136,9 +147,9 @@ const Program = forwardRef(
               </>
             ) : (
               <>
-                <div className={styles.title}>{title}</div>
-                {description && (
-                  <div className={styles.description}>{description}</div>
+                <div className={styles.title}>{programTitle}</div>
+                {programDescription && (
+                  <div className={styles.description}>{programDescription}</div>
                 )}
               </>
             )}
@@ -154,7 +165,7 @@ const Program = forwardRef(
             </div>
           ) : (
             <div className={styles.date}>
-              {getFormattedDate(date, 'Dth Mmmm, YYYY')}
+              {getFormattedDate(programDate, 'Dth Mmmm, YYYY')}
             </div>
           )}
           {!isEditing && (

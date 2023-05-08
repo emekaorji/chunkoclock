@@ -2,33 +2,10 @@
 import SmallButton from 'renderer/components/interface/buttons/smallButton';
 import PlusIcon from 'renderer/components/interface/icons/plus';
 import getClassName from 'renderer/functions/getClassName';
-import getRandomTitle from 'renderer/functions/getRandomWord';
-import { v4 as uuidv4 } from 'uuid';
 import styles from './timeSlotsTab.module.css';
 import useAgendumContext from '../hooks/useAgendumContext';
 import TimeSlot from './timeSlot/timeSlot';
-import { ITimeSlot } from '../types/timeSlotTypes';
 import ProgramDetails from './programDetails/programDetails';
-
-const getTimeSlots = (num: number) => {
-  const arr: ITimeSlot[] = [];
-  for (let i = 0; i < num; i++) {
-    const randomTitle = getRandomTitle();
-    arr.push({
-      id: uuidv4(),
-      title: randomTitle,
-      placeholder: randomTitle,
-      description: '',
-      speaker: '',
-      start: '',
-      end: '',
-      overlap: '',
-    });
-  }
-  return arr;
-};
-
-const TIME_SLOTS = getTimeSlots(1);
 
 const TimeSlotsTab = () => {
   const {
@@ -70,6 +47,8 @@ const TimeSlotsTab = () => {
               speaker={item.speaker}
               start={item.start}
               end={item.end}
+              overlap={item.overlap}
+              prevTimeSlot={array[index - 1]}
               isLast={isLastTimeSlot(index, array)}
               ref={timeSlotTitleRef}
             />

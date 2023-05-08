@@ -174,6 +174,7 @@ const AgendumProvider = ({ children }: AgendumProviderProps) => {
     (id: string) => {
       const clickedProgram = programs.find((program) => program.id === id);
       if (!clickedProgram) return;
+      console.log(clickedProgram);
       setSelectedProgram(clickedProgram);
     },
     [programs]
